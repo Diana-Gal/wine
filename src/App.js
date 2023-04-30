@@ -7,6 +7,7 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import { auth } from "./config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { Container } from "react-bootstrap";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -33,20 +34,34 @@ function App() {
 
   return (
     <Router>
-      <div>
-        <h1>Wines</h1>
-      </div>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route
-          exact
-          path="/"
+          path="/signup"
           element={
-            loggedIn ? <Navigate to={"/home"} /> : <Navigate to={"/login"} />
+            <Container
+              className="d-flex align-items-center justify-content-center"
+              style={{ minHeight: "100vh" }}
+            >
+              <div className="w-100" style={{ maxWidth: "400px" }}>
+                <Signup />
+              </div>
+            </Container>
           }
         />
-        <Route path="/home" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={
+            <Container
+              className="d-flex align-items-center justify-content-center"
+              style={{ minHeight: "100vh" }}
+            >
+              <div className="w-100" style={{ maxWidth: "400px" }}>
+                <Login />
+              </div>
+            </Container>
+          }
+        />
       </Routes>
     </Router>
   );

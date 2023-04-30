@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
+import { Form, Button, Card } from "react-bootstrap";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -29,48 +30,41 @@ const Signup = () => {
   };
 
   return (
-    <main>
-      <section>
-        <div>
-          <div>
-            <h1> WinesApp </h1>
-            <form>
-              <div>
-                <label htmlFor="email-address">Email address</label>
-                <input
-                  type="email"
-                  label="Email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder="Email address"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  label="Create password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder="Password"
-                />
-              </div>
-
-              <button type="submit" onClick={onSubmit}>
-                Sign up
-              </button>
-            </form>
-
-            <p>
-              Already have an account? <NavLink to="/login">Sign in</NavLink>
-            </p>
-          </div>
-        </div>
-      </section>
-    </main>
+    <>
+      <Card>
+        <Card.Body>
+          <h2 className="text-center mb-4">Sign Up</h2>
+          <Form>
+            <Form.Group id="email">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email address"
+                required
+              />
+            </Form.Group>
+            <Form.Group id="password">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Password"
+              />
+            </Form.Group>
+            <Button className="w-100 mt-2" type="submit" onClick={onSubmit}>
+              Sign Up
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
+      <div className="w-100 text-center mt-2">
+        Already have an account? <NavLink to="/login">Sign in</NavLink>
+      </div>
+    </>
   );
 };
 
