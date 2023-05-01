@@ -9,6 +9,11 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const buttonStyle = {
+    color: "white",
+    backgroundColor: "#722f37",
+    borderColor: "#722f37",
+  };
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider).then((userCredential) => {
@@ -28,7 +33,7 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        navigate("/home");
+        navigate("/");
         console.log(user);
       })
       .catch((error) => {
@@ -64,11 +69,17 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
-            <Button className="w-100 mt-2" type="submit" onClick={onLogin}>
+            <Button
+              className="w-100 mt-2"
+              style={buttonStyle}
+              type="submit"
+              onClick={onLogin}
+            >
               Sign In
             </Button>
             <Button
               className="w-100 mt-2"
+              style={buttonStyle}
               type="submit"
               onClick={signInWithGoogle}
             >
@@ -78,7 +89,10 @@ const Login = () => {
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        Don't have an account? <NavLink to="/signup">Sign up</NavLink>
+        Don't have an account?{" "}
+        <NavLink to="/signup" style={{ color: "#722f37" }}>
+          Sign up
+        </NavLink>
       </div>
     </>
   );

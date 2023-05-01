@@ -10,6 +10,12 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const buttonStyle = {
+    color: "white",
+    backgroundColor: "#722f37",
+    borderColor: "#722f37",
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -55,14 +61,22 @@ const Signup = () => {
                 placeholder="Password"
               />
             </Form.Group>
-            <Button className="w-100 mt-2" type="submit" onClick={onSubmit}>
+            <Button
+              style={buttonStyle}
+              className="w-100 mt-2"
+              type="submit"
+              onClick={onSubmit}
+            >
               Sign Up
             </Button>
           </Form>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        Already have an account? <NavLink to="/login">Sign in</NavLink>
+        Already have an account?{" "}
+        <NavLink to="/login" style={{ color: "#722f37" }}>
+          Sign in
+        </NavLink>
       </div>
     </>
   );
