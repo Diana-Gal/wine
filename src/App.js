@@ -14,6 +14,8 @@ import {
   addDoc,
   getDoc,
   updateDoc,
+  getDocs,
+  query,
 } from "firebase/firestore";
 import { Container } from "react-bootstrap";
 import AddWine from "./components/addWine";
@@ -28,10 +30,16 @@ const App = () => {
   const [firstRender, setFirstRender] = useState(true); // Variabila ajutatoare pentru a verifica daca avem de-a face cu primul "render" al componentei
   const navigate = useNavigate(); //pt navigare intre pagini
 
-  //functie pt a citi lista de vinuri din local storage
-  const getWineList = () => {
-    //citesc din local storage
-    let newWineList = JSON.parse(localStorage.getItem("wineList"));
+  //functie pt a citi lista de vinuri din baza de date
+  const getWineList = async () => {
+    const q = query(collection(db, "wines"));
+    const querySnapshot = await getDocs(q);
+    const newWineList = [];
+    querySnapshot.forEach((doc) => {
+      const newWine = doc.data();
+      newWine.id = doc.id;
+      newWineList.push(newWine);
+    });
     if (newWineList) {
       setList(newWineList);
     } else {
