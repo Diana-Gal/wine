@@ -5,15 +5,30 @@ import Wine from "./wine";
 const WineCatalogue = (props) => {
   //se utilizează metoda "map" pentru a parcurge fiecare element din lista de vinuri "props.wineList
   const list = props.wineList.map((item) => {
-    const { src, name, description, country, price, id } = item; //  Am destructurat obiectul "item"
+    const {
+      src,
+      name,
+      country,
+      region,
+      varietal,
+      description,
+      type,
+      year,
+      ratings,
+      id,
+    } = item; //  Am destructurat obiectul "item"
     return (
       <Col key={id}>
         <Wine
           src={src}
           name={name}
-          description={description}
           country={country}
-          price={price}
+          region={region}
+          varietal={varietal}
+          description={description}
+          type={type}
+          year={year}
+          ratings={ratings}
           id={id}
           deleteWine={props.deleteWine}
           editSelectedWine={props.editSelectedWine}

@@ -38,6 +38,7 @@ const App = () => {
     querySnapshot.forEach((doc) => {
       const newWine = doc.data();
       newWine.id = doc.id;
+      console.log(newWine);
       newWineList.push(newWine);
     });
     if (newWineList) {
