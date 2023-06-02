@@ -1,8 +1,10 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Card, Button, Modal } from "react-bootstrap";
 import { BsTrashFill, BsPencilSquare } from "react-icons/bs";
 import { auth, db, checkIsAdmin } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import ReactStars from "react-rating-stars-component";
+import { doc, updateDoc } from "firebase/firestore";
 //comp primeste proprietati prin parametrul props care sunt apoi destructurate
 const Wine = (props) => {
   const {
@@ -19,13 +21,33 @@ const Wine = (props) => {
     deleteWine,
     editSelectedWine,
   } = props; //destructurare props
+
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [uid, setUid] = useState(null);
+  const [totalRating, setTotalRating] = useState(0);
+
+  const calculateTotalRating = () => {
+    if (ratings.length < 1) return;
+
+    let ratingsSum = 0;
+    ratings.forEach((rating) => (ratingsSum += rating.value));
+    setTotalRating(ratingsSum / ratings.length);
+  };
+
+  useEffect(() => {
+    calculateTotalRating();
+  }, []);
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
+      setIsLoggedIn(true);
+      setUid(user.uid);
       const adminCheck = await checkIsAdmin(user.uid);
       setIsAdmin(adminCheck);
     } else {
+      setUid(null);
+      setIsLoggedIn(false);
       setIsAdmin(false);
     }
   });
@@ -47,6 +69,36 @@ const Wine = (props) => {
       textAlign: "center",
       padding: "2px",
     },
+  };
+
+  // You can perform any logic here when the rating changes
+  const ratingChanged = async (newRating) => {
+    if (!isLoggedIn) {
+      alert("Please Login before rating a wine.");
+      return;
+    }
+
+    var existingRating = ratings.find((rating) => rating.uid == uid);
+
+    if (existingRating) {
+      existingRating.value = newRating;
+    } else {
+      ratings.push({ uid: uid, value: newRating });
+    }
+
+    const wine = {
+      name,
+      src,
+      country,
+      region,
+      varietal,
+      description,
+      type,
+      year,
+      ratings,
+    };
+    await updateDoc(doc(db, "wines", id), wine);
+    calculateTotalRating();
   };
 
   return (
@@ -76,7 +128,20 @@ const Wine = (props) => {
             {year}
           </Card.Text>
           <Card.Text style={stil.text}>{description}</Card.Text>
-          <Card.Text style={stil.text}></Card.Text>
+          <Card.Text style={stil.text}>
+            <strong>{totalRating}</strong> ({ratings.length}{" "}
+            {ratings.length > 1 ? "ratings" : "rating"})
+          </Card.Text>
+          <ReactStars
+            key={totalRating} // Add key prop with totalRating as the value
+            value={totalRating}
+            isHalf={true}
+            count={5}
+            onChange={ratingChanged}
+            size={28}
+            activeColor="#872424"
+            color="#e3e3e3"
+          />
         </Card.Body>
         {isAdmin ? (
           <Card.Footer>
