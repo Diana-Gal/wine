@@ -1,8 +1,13 @@
 import NavWine from "./NavWine";
 import { Container, Row, Col } from "react-bootstrap";
 import Wine from "./wine";
+import { useState, useEffect } from "react";
 
 const WineCatalogue = (props) => {
+  useEffect(() => {
+    props.getWineList();
+  }, []); // Call getWineList when the component mounts
+
   //se utilizează metoda "map" pentru a parcurge fiecare element din lista de vinuri "props.wineList
   const list = props.wineList.map((item) => {
     const {
@@ -17,6 +22,7 @@ const WineCatalogue = (props) => {
       ratings,
       id,
     } = item; //  Am destructurat obiectul "item"
+
     return (
       <Col key={id}>
         <Wine

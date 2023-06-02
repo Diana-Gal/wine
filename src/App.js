@@ -49,13 +49,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (firstRender) {
-      getWineList();
-      setFirstRender(false); // Evitam suprascrierea cu ajutorul acestui 'if' si modificam valoarea variabilei din true in false
-    } else {
-      localStorage.setItem("wineList", JSON.stringify(list));
-    }
-
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setLoggedIn(true);
@@ -83,6 +76,7 @@ const App = () => {
   //Functie folosita pentru a sterge un vin din baza de date folosind id-ul vinului
   const deleteWine = async (id) => {
     await deleteDoc(doc(db, "wines", id));
+    getWineList();
   };
 
   const editSelectedWine = async (id) => {
@@ -111,6 +105,7 @@ const App = () => {
             wineList={list}
             deleteWine={deleteWine}
             editSelectedWine={editSelectedWine}
+            getWineList={getWineList}
           />
         }
       />
@@ -119,8 +114,7 @@ const App = () => {
         element={
           <Container
             className="d-flex align-items-center justify-content-center"
-            style={{ minHeight: "100vh" }}
-          >
+            style={{ minHeight: "100vh" }}>
             <div className="w-100" style={{ maxWidth: "400px" }}>
               <Signup />
             </div>
@@ -134,8 +128,7 @@ const App = () => {
             <NavWine />
             <Container
               className="d-flex align-items-center justify-content-center"
-              style={{ minHeight: "100vh" }}
-            >
+              style={{ minHeight: "100vh" }}>
               <div className="w-100" style={{ maxWidth: "700px" }}>
                 {<AddWine add={addWine} wine={wine} edit={editWine} />}
               </div>
@@ -150,8 +143,7 @@ const App = () => {
             <NavWine />
             <Container
               className="d-flex align-items-center justify-content-center"
-              style={{ minHeight: "100vh" }}
-            >
+              style={{ minHeight: "100vh" }}>
               <div className="w-100" style={{ maxWidth: "700px" }}>
                 {<AddWine add={addWine} wine={wine} edit={editWine} />}
               </div>
@@ -165,8 +157,7 @@ const App = () => {
         element={
           <Container
             className="d-flex align-items-center justify-content-center"
-            style={{ minHeight: "100vh" }}
-          >
+            style={{ minHeight: "100vh" }}>
             <div className="w-100" style={{ maxWidth: "400px" }}>
               <Login />
             </div>

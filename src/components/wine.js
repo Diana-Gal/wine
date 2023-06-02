@@ -29,7 +29,6 @@ const Wine = (props) => {
       setIsAdmin(false);
     }
   });
-
   const stil = {
     card: {
       width: "100%",
