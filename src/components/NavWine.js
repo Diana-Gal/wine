@@ -3,7 +3,7 @@ import { FaWineBottle } from "react-icons/fa";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { signOut } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { auth, checkIsAdmin } from "../config/firebase";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -19,12 +19,16 @@ const NavWine = () => {
     color: "white",
     padding: 0,
   };
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
       setLoggedIn(true);
       setUser(user);
+      const adminCheck = await checkIsAdmin(user.uid);
+      setIsAdmin(adminCheck);
     } else {
+      setIsAdmin(false);
       setLoggedIn(false);
       setUser(null);
     }
@@ -50,8 +54,7 @@ const NavWine = () => {
       sticky="top"
       style={{ backgroundColor: stil.backgroundColor }}
       expand="md"
-      variant="dark"
-    >
+      variant="dark">
       <Container fluid>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
@@ -61,9 +64,11 @@ const NavWine = () => {
                 <FaWineBottle /> My Wine Collection
               </Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/addWine">
-              <Nav.Link>Add Wine</Nav.Link>
-            </LinkContainer>
+            {loggedIn && isAdmin ? (
+              <LinkContainer to="/addWine">
+                <Nav.Link>Add Wine</Nav.Link>
+              </LinkContainer>
+            ) : null}
             <LinkContainer to="/blog">
               <Nav.Link>Blog</Nav.Link>
             </LinkContainer>

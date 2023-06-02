@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,3 +23,13 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app); //  Se include pentru a accesa firestore
+// Set admin privilege on the user corresponding to uid.
+export const checkIsAdmin = async (uid) => {
+  if (uid != "xoBRSZ5W4UeWKDnBLITMcA3Mgph2") {
+    return;
+  }
+
+  const ref = await getDoc(doc(db, "users", uid));
+  const userData = ref.data();
+  return userData?.isAdmin;
+};

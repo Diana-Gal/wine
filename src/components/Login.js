@@ -3,7 +3,6 @@ import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../config/firebase";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Form, Button, Card } from "react-bootstrap";
-
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -18,9 +17,7 @@ const Login = () => {
     try {
       await signInWithPopup(auth, googleProvider).then((userCredential) => {
         // Signed in
-        const user = userCredential.user;
-        navigate("/home");
-        console.log(user);
+        navigate("/");
       });
     } catch (err) {
       console.error(err);
@@ -31,10 +28,7 @@ const Login = () => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
         navigate("/");
-        console.log(user);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -73,16 +67,14 @@ const Login = () => {
               className="w-100 mt-2"
               style={buttonStyle}
               type="submit"
-              onClick={onLogin}
-            >
+              onClick={onLogin}>
               Sign In
             </Button>
             <Button
               className="w-100 mt-2"
               style={buttonStyle}
               type="submit"
-              onClick={signInWithGoogle}
-            >
+              onClick={signInWithGoogle}>
               Sign In With Google
             </Button>
           </Form>
