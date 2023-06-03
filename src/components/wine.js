@@ -1,10 +1,11 @@
 import { React, useState, useEffect } from "react";
-import { Card, Button, Modal } from "react-bootstrap";
+import { Card, Button, Modal, Col, Row, Container } from "react-bootstrap";
 import { BsTrashFill, BsPencilSquare } from "react-icons/bs";
 import { auth, db, checkIsAdmin } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import ReactStars from "react-rating-stars-component";
 import { doc, updateDoc } from "firebase/firestore";
+import "../styles.css";
 //comp primeste proprietati prin parametrul props care sunt apoi destructurate
 const Wine = (props) => {
   const {
@@ -52,18 +53,7 @@ const Wine = (props) => {
     }
   });
   const stil = {
-    card: {
-      width: "100%",
-      maxHeight: "550px",
-    },
     text: {},
-    img: {
-      variant: "top",
-      width: "100%",
-      maxHeight: "45%",
-      objectFit: "scale-down",
-      padding: "2px 0px",
-    },
     title: {
       fontSize: "1.4rem",
       textAlign: "center",
@@ -103,45 +93,61 @@ const Wine = (props) => {
 
   return (
     <>
-      <Card className="h-100" style={stil.card}>
-        <Card.Img style={stil.img} src={"images/" + src} />
+      <Card className="h-100 card">
         <Card.Body style={stil.cardBody}>
-          <Card.Title style={stil.title}>{name}</Card.Title>
-          <Card.Text style={stil.text}>
-            <strong>Country: </strong>
-            {country}
-          </Card.Text>
-          <Card.Text style={stil.text}>
-            <strong>Region: </strong>
-            {region}
-          </Card.Text>
-          <Card.Text style={stil.text}>
-            <strong>Varietal: </strong>
-            {varietal}
-          </Card.Text>
-          <Card.Text style={stil.text}>
-            <strong>Type: </strong>
-            {type}
-          </Card.Text>
-          <Card.Text style={stil.text}>
-            <strong>Vintage: </strong>
-            {year}
-          </Card.Text>
-          <Card.Text style={stil.text}>{description}</Card.Text>
-          <Card.Text style={stil.text}>
-            <strong>{totalRating}</strong> ({ratings.length}{" "}
-            {ratings.length > 1 ? "ratings" : "rating"})
-          </Card.Text>
-          <ReactStars
-            key={totalRating} // Add key prop with totalRating as the value
-            value={totalRating}
-            isHalf={true}
-            count={5}
-            onChange={ratingChanged}
-            size={28}
-            activeColor="#872424"
-            color="#e3e3e3"
-          />
+          <Container fluid>
+            <Row>
+              <Col className="wine-image-col">
+                <Card.Img
+                  className="wine-image"
+                  variant="top"
+                  src={"images/" + src}
+                />
+              </Col>
+              <Col>
+                <Card.Text style={stil.text}>
+                  <strong>{totalRating}</strong> ({ratings.length}{" "}
+                  {ratings.length > 1 ? "ratings" : "rating"})
+                </Card.Text>
+                <ReactStars
+                  key={totalRating} // Add key prop with totalRating as the value
+                  value={totalRating}
+                  isHalf={true}
+                  count={5}
+                  onChange={ratingChanged}
+                  size={28}
+                  activeColor="#872424"
+                  color="#e3e3e3"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Card.Title style={stil.title}>{name}</Card.Title>
+            </Row>
+            <Row>
+              <Card.Text style={stil.text}>
+                <strong>Country: </strong>
+                {country}
+              </Card.Text>
+              <Card.Text style={stil.text}>
+                <strong>Region: </strong>
+                {region}
+              </Card.Text>
+              <Card.Text style={stil.text}>
+                <strong>Varietal: </strong>
+                {varietal}
+              </Card.Text>
+              <Card.Text style={stil.text}>
+                <strong>Type: </strong>
+                {type}
+              </Card.Text>
+              <Card.Text style={stil.text}>
+                <strong>Vintage: </strong>
+                {year}
+              </Card.Text>
+              {/*<Card.Text style={stil.text}>{description}</Card.Text>*/}
+            </Row>
+          </Container>
         </Card.Body>
         {isAdmin ? (
           <Card.Footer>
