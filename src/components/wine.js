@@ -36,7 +36,7 @@ const Wine = (props) => {
   };
 
   useEffect(() => {
-    calculateTotalRating();
+    //calculateTotalRating();
   }, []);
 
   onAuthStateChanged(auth, async (user) => {

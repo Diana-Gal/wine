@@ -16,6 +16,7 @@ import {
   updateDoc,
   getDocs,
   query,
+  getFirestore,
 } from "firebase/firestore";
 import { Container } from "react-bootstrap";
 import AddWine from "./components/addWine";
@@ -29,23 +30,15 @@ const App = () => {
   const [wine, setWine] = useState({});
   const [firstRender, setFirstRender] = useState(true); // Variabila ajutatoare pentru a verifica daca avem de-a face cu primul "render" al componentei
   const navigate = useNavigate(); //pt navigare intre pagini
-
   //functie pt a citi lista de vinuri din baza de date
   const getWineList = async () => {
-    const q = query(collection(db, "wines"));
-    const querySnapshot = await getDocs(q);
-    const newWineList = [];
-    querySnapshot.forEach((doc) => {
-      const newWine = doc.data();
+    const winesDocs = await getDocs(collection(db, "wines"));
+    let newWineList = winesDocs.docs.map((doc) => {
+      let newWine = doc.data();
       newWine.id = doc.id;
-      console.log(newWine);
-      newWineList.push(newWine);
+      return newWine;
     });
-    if (newWineList) {
-      setList(newWineList);
-    } else {
-      setList([]);
-    }
+    setList(newWineList);
   };
 
   useEffect(() => {
@@ -71,6 +64,7 @@ const App = () => {
   const addWine = async (wine) => {
     const addedWine = await addDoc(collection(db, "wines"), wine);
     console.log("Vinul adaugat cu ID: ", addedWine.id);
+    navigate(`/`);
   };
 
   //Functie folosita pentru a sterge un vin din baza de date folosind id-ul vinului

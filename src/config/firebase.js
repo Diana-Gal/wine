@@ -19,7 +19,7 @@ const firebaseConfig = {
 //https://www.youtube.com/watch?v=2hR-uWjBAgw&t=404s&ab_channel=PedroTech
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app); //  Se include pentru a accesa firestore
