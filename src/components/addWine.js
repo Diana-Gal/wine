@@ -60,11 +60,6 @@ const AddWine = (props) => {
     setYear("");
   };
 
-  const buttonStyle = {
-    color: "white",
-    backgroundColor: "#722f37",
-    borderColor: "#722f37",
-  };
   return (
     <>
       {alert && (
@@ -157,7 +152,7 @@ const AddWine = (props) => {
             <Form.Group>
               <Form.Label>* Indicates a required field</Form.Label>
             </Form.Group>
-            <Button className="w-100 mt-2" style={buttonStyle} type="submit">
+            <Button className="w-100 mt-2 button" type="submit">
               {props.wine.id ? "Edit Wine" : "Add Wine"}
             </Button>
           </Form>

@@ -17,6 +17,7 @@ import {
   getDocs,
   query,
   getFirestore,
+  where,
 } from "firebase/firestore";
 import { Container } from "react-bootstrap";
 import AddWine from "./components/addWine";
@@ -31,8 +32,35 @@ const App = () => {
   const [firstRender, setFirstRender] = useState(true); // Variabila ajutatoare pentru a verifica daca avem de-a face cu primul "render" al componentei
   const navigate = useNavigate(); //pt navigare intre pagini
   //functie pt a citi lista de vinuri din baza de date
-  const getWineList = async () => {
-    const winesDocs = await getDocs(collection(db, "wines"));
+  const getWineList = async (
+    typeFilter = "",
+    varietalFilter = "",
+    countryFilter = "",
+    regionFilter = "",
+    vintageFilter = ""
+  ) => {
+    let q = collection(db, "wines");
+
+    if (typeFilter) {
+      q = query(q, where("type", "==", typeFilter));
+    }
+
+    if (varietalFilter) {
+      q = query(q, where("varietal", "==", varietalFilter));
+    }
+
+    if (countryFilter) {
+      q = query(q, where("country", "==", countryFilter));
+    }
+
+    if (regionFilter) {
+      q = query(q, where("region", "==", regionFilter));
+    }
+
+    if (vintageFilter) {
+      q = query(q, where("year", "==", vintageFilter));
+    }
+    const winesDocs = await getDocs(q);
     let newWineList = winesDocs.docs.map((doc) => {
       let newWine = doc.data();
       newWine.id = doc.id;

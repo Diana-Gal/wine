@@ -19,12 +19,51 @@
 
 .card {
   width: 100%;
-  max-height: 550px;
-  transition: transform 0.2s ease;
+  max-height: 700px;
+  justify-content: space-evenly;
+  transition: transform 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px) scale(1.005);
-  box-shadow: 0 4px 6px rgba(143, 16, 16, 0.774);
-  transition: transform 0.2s ease-out;
+  transform: translateY(-5px) scale(1.002);
+  box-shadow: 0 4px 6px rgba(143, 16, 16, 0.3);
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+.wine-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-height: 40vh; /* Set a maximum height using viewport units (vh) */
+  line-height: 1.4; /* Adjust the line height for better readability */
+}
+
+.dropdown-button {
+  --bs-btn-color: rgba(255, 255, 255, 0.55) !important;
+  --bs-btn-bg: rgb(114, 47, 55) !important;
+  --bs-btn-border-color: rgb(114, 47, 55) !important;
+  --bs-btn-hover-color: white !important;
+  --bs-btn-hover-bg: rgb(114, 47, 55) !important;
+  --bs-btn-hover-border-color: rgb(114, 47, 55) !important;
+  --bs-btn-active-bg: rgb(114, 47, 55) !important;
+  --bs-btn-active-border-color: rgb(114, 47, 55) !important;
+}
+
+.button-filter {
+  --bs-btn-color: rgba(255, 255, 255, 0.55) !important;
+  --bs-btn-bg: rgb(114, 47, 55) !important;
+  --bs-btn-border-color: rgb(114, 47, 55) !important;
+  --bs-btn-hover-color: white !important;
+  --bs-btn-hover-bg: rgb(114, 47, 55) !important;
+  --bs-btn-hover-border-color: rgb(114, 47, 55) !important;
+  --bs-btn-active-bg: rgb(114, 47, 55) !important;
+  --bs-btn-active-border-color: rgb(114, 47, 55) !important;
+  flex: 0 auto !important;
+}
+
+.button {
+  color: white !important;
+  background-color: #722f37 !important;
+  border-color: #722f37 !important;
 }

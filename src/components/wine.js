@@ -23,22 +23,18 @@ const Wine = (props) => {
     editSelectedWine,
   } = props; //destructurare props
 
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [uid, setUid] = useState(null);
-  const [totalRating, setTotalRating] = useState(0);
-
   const calculateTotalRating = () => {
     if (ratings.length < 1) return;
 
     let ratingsSum = 0;
     ratings.forEach((rating) => (ratingsSum += rating.value));
-    setTotalRating(ratingsSum / ratings.length);
+    return ratingsSum / ratings.length;
   };
 
-  useEffect(() => {
-    //calculateTotalRating();
-  }, []);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [uid, setUid] = useState(null);
+  const [totalRating, setTotalRating] = useState(calculateTotalRating());
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -88,7 +84,7 @@ const Wine = (props) => {
       ratings,
     };
     await updateDoc(doc(db, "wines", id), wine);
-    calculateTotalRating();
+    setTotalRating(calculateTotalRating());
   };
 
   return (
@@ -104,7 +100,7 @@ const Wine = (props) => {
                   src={"images/" + src}
                 />
               </Col>
-              <Col>
+              <Col className="justify-content-center">
                 <Card.Text style={stil.text}>
                   <strong>{totalRating}</strong> ({ratings.length}{" "}
                   {ratings.length > 1 ? "ratings" : "rating"})
@@ -145,7 +141,7 @@ const Wine = (props) => {
                 <strong>Vintage: </strong>
                 {year}
               </Card.Text>
-              {/*<Card.Text style={stil.text}>{description}</Card.Text>*/}
+              <Card.Text className="wine-description">{description}</Card.Text>
             </Row>
           </Container>
         </Card.Body>

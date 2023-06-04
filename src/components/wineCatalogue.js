@@ -6,14 +6,22 @@ import {
   ButtonGroup,
   Dropdown,
   DropdownButton,
+  Button,
 } from "react-bootstrap";
 import Wine from "./wine";
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const WineCatalogue = (props) => {
+  let selectedType = "";
+  let selectedVarietal = "";
+  let selectedCountry = "";
+  let selectedRegion = "";
+  let selectedYear = "";
+
   useEffect(() => {
     props.getWineList();
   }, []);
+
   //se utilizează metoda "map" pentru a parcurge fiecare element din lista de vinuri "props.wineList
   const list = props.wineList.map((item) => {
     const {
@@ -51,7 +59,7 @@ const WineCatalogue = (props) => {
 
   const typeDropdownItems = props.wineList.map((wine) => {
     return (
-      <Dropdown.Item key={wine.type} eventKey="{wine.type}">
+      <Dropdown.Item key={wine.type} eventKey={wine.type}>
         {wine.type}
       </Dropdown.Item>
     );
@@ -59,7 +67,7 @@ const WineCatalogue = (props) => {
 
   const varietalDropdownItems = props.wineList.map((wine) => {
     return (
-      <Dropdown.Item key={wine.varietal} eventKey="{wine.varietal}">
+      <Dropdown.Item key={wine.varietal} eventKey={wine.varietal}>
         {wine.varietal}
       </Dropdown.Item>
     );
@@ -67,7 +75,7 @@ const WineCatalogue = (props) => {
 
   const countryDropdownItems = props.wineList.map((wine) => {
     return (
-      <Dropdown.Item key={wine.country} eventKey="{wine.country}">
+      <Dropdown.Item key={wine.country} eventKey={wine.country}>
         {wine.country}
       </Dropdown.Item>
     );
@@ -75,7 +83,7 @@ const WineCatalogue = (props) => {
 
   const regionDropdownItems = props.wineList.map((wine) => {
     return (
-      <Dropdown.Item key={wine.region} eventKey="{wine.region}">
+      <Dropdown.Item key={wine.region} eventKey={wine.region}>
         {wine.region}
       </Dropdown.Item>
     );
@@ -83,7 +91,7 @@ const WineCatalogue = (props) => {
 
   const vintageDropdownItems = props.wineList.map((wine) => {
     return (
-      <Dropdown.Item key={wine.year} eventKey="{wine.year}">
+      <Dropdown.Item key={wine.year} eventKey={wine.year}>
         {wine.year}
       </Dropdown.Item>
     );
@@ -93,15 +101,68 @@ const WineCatalogue = (props) => {
     backgroundColor: "rgb(114, 47, 55)",
   };
 
-  const dropdownButtonStyle = {
-    "--bs-btn-color": "rgba(255, 255, 255, 0.55)",
-    "--bs-btn-bg": "rgb(114, 47, 55)",
-    "--bs-btn-border-color": "rgb(114, 47, 55)",
-    "--bs-btn-hover-color": "white",
-    "--bs-btn-hover-bg": "rgb(114, 47, 55)",
-    "--bs-btn-hover-border-color": "rgb(114, 47, 55)",
-    "--bs-btn-active-bg": "rgb(114, 47, 55)",
-    "--bs-btn-active-border-color": "rgb(114, 47, 55)",
+  const handleSelectType = (eventKey) => {
+    selectedType = eventKey;
+    props.getWineList(
+      selectedType,
+      selectedVarietal,
+      selectedCountry,
+      selectedRegion,
+      selectedYear
+    );
+    console.log(eventKey);
+  };
+
+  const handleSelectVarietal = (eventKey) => {
+    selectedVarietal = eventKey;
+    props.getWineList(
+      selectedType,
+      selectedVarietal,
+      selectedCountry,
+      selectedRegion,
+      selectedYear
+    );
+    console.log(eventKey);
+  };
+
+  const handleSelectRegion = (eventKey) => {
+    selectedRegion = eventKey;
+    props.getWineList(
+      selectedType,
+      selectedVarietal,
+      selectedCountry,
+      selectedRegion,
+      selectedYear
+    );
+    console.log(eventKey);
+  };
+
+  const handleSelectCountry = (eventKey) => {
+    selectedCountry = eventKey;
+    props.getWineList(
+      selectedType,
+      selectedVarietal,
+      selectedCountry,
+      selectedRegion,
+      selectedYear
+    );
+    console.log(eventKey);
+  };
+
+  const handleSelectYear = (eventKey) => {
+    selectedYear = eventKey;
+    props.getWineList(
+      selectedType,
+      selectedVarietal,
+      selectedCountry,
+      selectedRegion,
+      selectedYear
+    );
+    console.log(eventKey);
+  };
+
+  const resetFilters = () => {
+    props.getWineList();
   };
   return (
     <>
@@ -109,32 +170,35 @@ const WineCatalogue = (props) => {
       <Container fluid>
         <Row style={filterRowStyle}>
           <ButtonGroup className="d-flex justify-content-center mb-2">
-            <Dropdown>
-              <Dropdown.Toggle style={dropdownButtonStyle}>
+            <Button className="button-filter" onClick={resetFilters}>
+              Reset Filters
+            </Button>
+            <Dropdown onSelect={handleSelectType}>
+              <Dropdown.Toggle className="dropdown-button">
                 Type
               </Dropdown.Toggle>
               <Dropdown.Menu>{typeDropdownItems}</Dropdown.Menu>
             </Dropdown>
-            <Dropdown>
-              <Dropdown.Toggle style={dropdownButtonStyle}>
+            <Dropdown onSelect={handleSelectVarietal}>
+              <Dropdown.Toggle className="dropdown-button">
                 Varietal
               </Dropdown.Toggle>
               <Dropdown.Menu>{varietalDropdownItems}</Dropdown.Menu>
             </Dropdown>
-            <Dropdown>
-              <Dropdown.Toggle style={dropdownButtonStyle}>
+            <Dropdown onSelect={handleSelectCountry}>
+              <Dropdown.Toggle className="dropdown-button">
                 Country
               </Dropdown.Toggle>
               <Dropdown.Menu>{countryDropdownItems}</Dropdown.Menu>
             </Dropdown>
-            <Dropdown>
-              <Dropdown.Toggle style={dropdownButtonStyle}>
+            <Dropdown onSelect={handleSelectRegion}>
+              <Dropdown.Toggle className="dropdown-button">
                 Region
               </Dropdown.Toggle>
               <Dropdown.Menu>{regionDropdownItems}</Dropdown.Menu>
             </Dropdown>
-            <Dropdown>
-              <Dropdown.Toggle style={dropdownButtonStyle}>
+            <Dropdown onSelect={handleSelectYear}>
+              <Dropdown.Toggle className="dropdown-button">
                 Vintage
               </Dropdown.Toggle>
               <Dropdown.Menu>{vintageDropdownItems}</Dropdown.Menu>
