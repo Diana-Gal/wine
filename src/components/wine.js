@@ -19,8 +19,8 @@ const Wine = (props) => {
     year,
     ratings,
     id,
-    deleteWine,
-    editSelectedWine,
+    handleEditWine,
+    handleDeleteWine,
   } = props; //destructurare props
 
   const calculateTotalRating = () => {
@@ -32,22 +32,25 @@ const Wine = (props) => {
   };
 
   const [isAdmin, setIsAdmin] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [uid, setUid] = useState(null);
   const [totalRating, setTotalRating] = useState(calculateTotalRating());
 
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      setIsLoggedIn(true);
-      setUid(user.uid);
-      const adminCheck = await checkIsAdmin(user.uid);
-      setIsAdmin(adminCheck);
-    } else {
-      setUid(null);
-      setIsLoggedIn(false);
-      setIsAdmin(false);
-    }
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setLoggedIn(true);
+        setUid(user.uid);
+        const adminCheck = await checkIsAdmin(user.uid);
+        setIsAdmin(adminCheck);
+      } else {
+        setUid(null);
+        setLoggedIn(false);
+        setIsAdmin(false);
+      }
+    });
+  }, []);
+
   const stil = {
     text: {},
     title: {
@@ -59,7 +62,7 @@ const Wine = (props) => {
 
   // You can perform any logic here when the rating changes
   const ratingChanged = async (newRating) => {
-    if (!isLoggedIn) {
+    if (!loggedIn) {
       alert("Please Login before rating a wine.");
       return;
     }
@@ -89,7 +92,7 @@ const Wine = (props) => {
 
   return (
     <>
-      <Card className="h-100 card">
+      <Card className="h-100 card-custom">
         <Card.Body style={stil.cardBody}>
           <Container fluid>
             <Row>
@@ -147,10 +150,10 @@ const Wine = (props) => {
         </Card.Body>
         {isAdmin ? (
           <Card.Footer>
-            <Button variant="link" onClick={() => editSelectedWine(id)}>
+            <Button variant="link" onClick={() => handleEditWine(id)}>
               <BsPencilSquare />
             </Button>
-            <Button variant="link" onClick={() => deleteWine(id)}>
+            <Button variant="link" onClick={() => handleDeleteWine(id)}>
               <BsTrashFill />
             </Button>
           </Card.Footer>

@@ -1,29 +1,78 @@
 import NavWine from "./NavWine";
-import {
-  Container,
-  Row,
-  Col,
-  ButtonGroup,
-  Dropdown,
-  DropdownButton,
-  Button,
-} from "react-bootstrap";
+import WineFilters from "./filtersWine";
+import { Container, Row, Col } from "react-bootstrap";
 import Wine from "./wine";
-import { useEffect, useState, useCallback } from "react";
-
-const WineCatalogue = (props) => {
-  let selectedType = "";
-  let selectedVarietal = "";
-  let selectedCountry = "";
-  let selectedRegion = "";
-  let selectedYear = "";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { db } from "../config/firebase";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
+const WineCatalogue = () => {
+  const [wines, setWines] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    props.getWineList();
+    getWineList();
   }, []);
 
+  const getWineList = async (
+    typeFilter = "",
+    varietalFilter = "",
+    countryFilter = "",
+    regionFilter = "",
+    vintageFilter = ""
+  ) => {
+    let q = collection(db, "wines");
+
+    if (typeFilter) {
+      q = query(q, where("type", "==", typeFilter));
+    }
+
+    if (varietalFilter) {
+      q = query(q, where("varietal", "==", varietalFilter));
+    }
+
+    if (countryFilter) {
+      q = query(q, where("country", "==", countryFilter));
+    }
+
+    if (regionFilter) {
+      q = query(q, where("region", "==", regionFilter));
+    }
+
+    if (vintageFilter) {
+      q = query(q, where("year", "==", vintageFilter));
+    }
+    const winesDocs = await getDocs(q);
+    let newWines = winesDocs.docs.map((doc) => {
+      let newWine = doc.data();
+      newWine.id = doc.id;
+      return newWine;
+    });
+    setWines(newWines);
+  };
+
+  //Functie folosita pentru a sterge un vin din baza de date folosind id-ul vinului
+  const handleDeleteWine = async (id) => {
+    await deleteDoc(doc(db, "wines", id));
+    getWineList();
+  };
+
+  const handleEditWine = async (id) => {
+    navigate(`/editWine/${id}`); //  Impun ruta "/editWine", deci declansez afisarea formularului
+  };
+
+  //Functie folosita pentru a naviga spre pagina de editare pentru un anumit vin
+  //folosind id-ul vinului pentru a aduce datele curente din baza de date
+
   //se utilizează metoda "map" pentru a parcurge fiecare element din lista de vinuri "props.wineList
-  const list = props.wineList.map((item) => {
+  const list = wines.map((item) => {
     const {
       src,
       name,
@@ -50,50 +99,10 @@ const WineCatalogue = (props) => {
           year={year}
           ratings={ratings}
           id={id}
-          deleteWine={props.deleteWine}
-          editSelectedWine={props.editSelectedWine}
+          handleDeleteWine={handleDeleteWine}
+          handleEditWine={handleEditWine}
         />
       </Col>
-    );
-  });
-
-  const typeDropdownItems = props.wineList.map((wine) => {
-    return (
-      <Dropdown.Item key={wine.type} eventKey={wine.type}>
-        {wine.type}
-      </Dropdown.Item>
-    );
-  });
-
-  const varietalDropdownItems = props.wineList.map((wine) => {
-    return (
-      <Dropdown.Item key={wine.varietal} eventKey={wine.varietal}>
-        {wine.varietal}
-      </Dropdown.Item>
-    );
-  });
-
-  const countryDropdownItems = props.wineList.map((wine) => {
-    return (
-      <Dropdown.Item key={wine.country} eventKey={wine.country}>
-        {wine.country}
-      </Dropdown.Item>
-    );
-  });
-
-  const regionDropdownItems = props.wineList.map((wine) => {
-    return (
-      <Dropdown.Item key={wine.region} eventKey={wine.region}>
-        {wine.region}
-      </Dropdown.Item>
-    );
-  });
-
-  const vintageDropdownItems = props.wineList.map((wine) => {
-    return (
-      <Dropdown.Item key={wine.year} eventKey={wine.year}>
-        {wine.year}
-      </Dropdown.Item>
     );
   });
 
@@ -101,109 +110,12 @@ const WineCatalogue = (props) => {
     backgroundColor: "rgb(114, 47, 55)",
   };
 
-  const handleSelectType = (eventKey) => {
-    selectedType = eventKey;
-    props.getWineList(
-      selectedType,
-      selectedVarietal,
-      selectedCountry,
-      selectedRegion,
-      selectedYear
-    );
-    console.log(eventKey);
-  };
-
-  const handleSelectVarietal = (eventKey) => {
-    selectedVarietal = eventKey;
-    props.getWineList(
-      selectedType,
-      selectedVarietal,
-      selectedCountry,
-      selectedRegion,
-      selectedYear
-    );
-    console.log(eventKey);
-  };
-
-  const handleSelectRegion = (eventKey) => {
-    selectedRegion = eventKey;
-    props.getWineList(
-      selectedType,
-      selectedVarietal,
-      selectedCountry,
-      selectedRegion,
-      selectedYear
-    );
-    console.log(eventKey);
-  };
-
-  const handleSelectCountry = (eventKey) => {
-    selectedCountry = eventKey;
-    props.getWineList(
-      selectedType,
-      selectedVarietal,
-      selectedCountry,
-      selectedRegion,
-      selectedYear
-    );
-    console.log(eventKey);
-  };
-
-  const handleSelectYear = (eventKey) => {
-    selectedYear = eventKey;
-    props.getWineList(
-      selectedType,
-      selectedVarietal,
-      selectedCountry,
-      selectedRegion,
-      selectedYear
-    );
-    console.log(eventKey);
-  };
-
-  const resetFilters = () => {
-    props.getWineList();
-  };
   return (
     <>
       <NavWine />
       <Container fluid>
         <Row style={filterRowStyle}>
-          <ButtonGroup className="d-flex justify-content-center mb-2">
-            <Button className="button-filter" onClick={resetFilters}>
-              Reset Filters
-            </Button>
-            <Dropdown onSelect={handleSelectType}>
-              <Dropdown.Toggle className="dropdown-button">
-                Type
-              </Dropdown.Toggle>
-              <Dropdown.Menu>{typeDropdownItems}</Dropdown.Menu>
-            </Dropdown>
-            <Dropdown onSelect={handleSelectVarietal}>
-              <Dropdown.Toggle className="dropdown-button">
-                Varietal
-              </Dropdown.Toggle>
-              <Dropdown.Menu>{varietalDropdownItems}</Dropdown.Menu>
-            </Dropdown>
-            <Dropdown onSelect={handleSelectCountry}>
-              <Dropdown.Toggle className="dropdown-button">
-                Country
-              </Dropdown.Toggle>
-              <Dropdown.Menu>{countryDropdownItems}</Dropdown.Menu>
-            </Dropdown>
-            <Dropdown onSelect={handleSelectRegion}>
-              <Dropdown.Toggle className="dropdown-button">
-                Region
-              </Dropdown.Toggle>
-              <Dropdown.Menu>{regionDropdownItems}</Dropdown.Menu>
-            </Dropdown>
-            <Dropdown onSelect={handleSelectYear}>
-              <Dropdown.Toggle className="dropdown-button">
-                Vintage
-              </Dropdown.Toggle>
-              <Dropdown.Menu>{vintageDropdownItems}</Dropdown.Menu>
-            </Dropdown>
-          </ButtonGroup>
+          <WineFilters />
         </Row>
         <Row xs={1} md={2} lg={3} xl={4} className="g-4">
           {list}

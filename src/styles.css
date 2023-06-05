@@ -17,14 +17,14 @@
   transform: scale(1.2);
 }
 
-.card {
+.card-custom {
   width: 100%;
   max-height: 700px;
   justify-content: space-evenly;
   transition: transform 0.3s ease;
 }
 
-.card:hover {
+.card-custom:hover {
   transform: translateY(-5px) scale(1.002);
   box-shadow: 0 4px 6px rgba(143, 16, 16, 0.3);
   transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
@@ -66,4 +66,9 @@
   color: white !important;
   background-color: #722f37 !important;
   border-color: #722f37 !important;
+}
+
+.bg-wine {
+  --bs-bg-opacity: 1;
+  background-color: rgba(114, 47, 55, var(--bs-bg-opacity)) !important;
 }
