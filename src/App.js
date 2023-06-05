@@ -23,6 +23,7 @@ import { Container } from "react-bootstrap";
 import AddWine from "./components/addWine";
 import MissingRoute from "./components/missingRoute";
 import NavWine from "./components/NavWine";
+import Blog from "./components/blog";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
