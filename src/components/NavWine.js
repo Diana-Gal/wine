@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { FaWineBottle } from "react-icons/fa";
+import { FaWineBottle, FaPlus, FaRegUser } from "react-icons/fa";
+import { BsPostcard } from "react-icons/bs";
+import { GoLightBulb } from "react-icons/go";
+import { SlLogout, SlLogin } from "react-icons/sl";
 import { Container, Navbar, Nav, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { signOut } from "firebase/auth";
@@ -52,30 +55,45 @@ const NavWine = () => {
           <Nav className="me-auto mb-2 mb-lg-0">
             <LinkContainer to="/">
               <Nav.Link>
-                <FaWineBottle /> My Wine Collection
+                <FaWineBottle size="1.25em" /> My Wine Collection
               </Nav.Link>
             </LinkContainer>
             {loggedIn && isAdmin ? (
               <LinkContainer to="/addWine">
-                <Nav.Link>Add Wine</Nav.Link>
+                <Nav.Link>
+                  <FaPlus size="1.25em" /> Add Wine
+                </Nav.Link>
               </LinkContainer>
             ) : null}
             <LinkContainer to="/blog">
-              <Nav.Link>Blog</Nav.Link>
+              <Nav.Link>
+                <BsPostcard size="1.5em" /> Blog
+              </Nav.Link>
             </LinkContainer>
             <LinkContainer to="/about">
-              <Nav.Link>About</Nav.Link>
+              <Nav.Link>
+                <GoLightBulb size="1.25em" />
+                About
+              </Nav.Link>
             </LinkContainer>
           </Nav>
         </Navbar.Collapse>
-        <Navbar.Text>{loggedIn ? `${user?.email},` : ""}</Navbar.Text>
+        <Navbar.Text>
+          {loggedIn ? (
+            <>
+              {<FaRegUser size="1.25em" />} {`${user?.email},`}
+            </>
+          ) : (
+            ""
+          )}
+        </Navbar.Text>
         {loggedIn ? (
           <Button className="button" onClick={handleLogout}>
-            Logout
+            <SlLogout size="1.25em" /> Logout
           </Button>
         ) : (
           <Button className="button" onClick={handleLogin}>
-            Login
+            <SlLogin size="1.25em" /> Login
           </Button>
         )}
       </Container>

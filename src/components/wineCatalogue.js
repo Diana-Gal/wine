@@ -115,7 +115,7 @@ const WineCatalogue = () => {
       <NavWine />
       <Container fluid>
         <Row style={filterRowStyle}>
-          <WineFilters />
+          <WineFilters wineList={wines} getWineList={getWineList} />
         </Row>
         <Row xs={1} md={2} lg={3} xl={4} className="g-4">
           {list}
