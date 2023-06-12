@@ -28,45 +28,80 @@ const WineFilters = (props) => {
     selectedYear,
   ]);
 
-  const typeDropdownItems = props.wineList.map((wine) => {
-    return (
-      <Dropdown.Item key={wine.type} eventKey={wine.type}>
-        {wine.type}
-      </Dropdown.Item>
-    );
-  });
+  const getTypeDropdownItems = () => {
+    const uniqueTypes = props.wineList
+      .map((wine) => wine.type) // Extracting all the wine types
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .sort();
 
-  const varietalDropdownItems = props.wineList.map((wine) => {
-    return (
-      <Dropdown.Item key={wine.varietal} eventKey={wine.varietal}>
-        {wine.varietal}
+    return uniqueTypes.map((type) => (
+      <Dropdown.Item key={type} eventKey={type}>
+        {type}
       </Dropdown.Item>
-    );
-  });
+    ));
+  };
 
-  const countryDropdownItems = props.wineList.map((wine) => {
-    return (
-      <Dropdown.Item key={wine.country} eventKey={wine.country}>
-        {wine.country}
-      </Dropdown.Item>
-    );
-  });
+  const getVarietalDropdownItems = () => {
+    const uniqueVarietals = props.wineList
+      .map((wine) => wine.varietal) // Extracting all the wine types
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .sort();
 
-  const regionDropdownItems = props.wineList.map((wine) => {
-    return (
-      <Dropdown.Item key={wine.region} eventKey={wine.region}>
-        {wine.region}
+    return uniqueVarietals.map((varietal) => (
+      <Dropdown.Item key={varietal} eventKey={varietal}>
+        {varietal}
       </Dropdown.Item>
-    );
-  });
+    ));
+  };
 
-  const vintageDropdownItems = props.wineList.map((wine) => {
-    return (
-      <Dropdown.Item key={wine.year} eventKey={wine.year}>
-        {wine.year}
+  const getRegionDropdownItems = () => {
+    const uniqueRegions = props.wineList
+      .map((wine) => wine.region) // Extracting all the wine types
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .sort();
+
+    return uniqueRegions.map((region) => (
+      <Dropdown.Item key={region} eventKey={region}>
+        {region}
       </Dropdown.Item>
-    );
-  });
+    ));
+  };
+
+  const getCountryDropdownItems = () => {
+    const uniqueCountries = props.wineList
+      .map((wine) => wine.country) // Extracting all the wine types
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .sort();
+
+    return uniqueCountries.map((country) => (
+      <Dropdown.Item key={country} eventKey={country}>
+        {country}
+      </Dropdown.Item>
+    ));
+  };
+
+  const getYearDropdownItems = () => {
+    const uniqueYears = props.wineList
+      .map((wine) => wine.year) // Extracting all the wine types
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .sort();
+
+    return uniqueYears.map((year) => (
+      <Dropdown.Item key={year} eventKey={year}>
+        {year}
+      </Dropdown.Item>
+    ));
+  };
+
+  const typeDropdownItems = getTypeDropdownItems();
+
+  const varietalDropdownItems = getVarietalDropdownItems();
+
+  const countryDropdownItems = getCountryDropdownItems();
+
+  const regionDropdownItems = getRegionDropdownItems();
+
+  const vintageDropdownItems = getYearDropdownItems();
 
   const handleSelectType = (eventKey) => {
     setSelectedType(eventKey);

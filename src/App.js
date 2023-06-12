@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import AddWine from "./components/addWine";
 import MissingRoute from "./components/missingRoute";
 import Signup from "./components/Signup";
+import About from "./components/about";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
       <Route path="/addWine" element={<AddWine />} />
       <Route path="/editWine/:id" element={<AddWine />} />
       <Route path="*" element={<MissingRoute />} />
+      <Route path="/about" element={<About />} />
     </Routes>
   );
 };

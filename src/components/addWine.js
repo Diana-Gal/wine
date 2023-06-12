@@ -107,13 +107,22 @@ const AddWine = () => {
                 </Form.Group>
 
                 <Form.Group>
-                  <Form.Label>Type*:</Form.Label>
+                  <Form.Label>Country*:</Form.Label>
                   <Form.Control
                     type="text"
-                    value={wine.type}
-                    name="type"
+                    value={wine.country}
+                    name="country"
                     onChange={handleChange}
                     required
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Region:</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={wine.region}
+                    name="region"
+                    onChange={handleChange}
                   />
                 </Form.Group>
 
@@ -126,23 +135,12 @@ const AddWine = () => {
                     onChange={handleChange}
                   />
                 </Form.Group>
-
                 <Form.Group>
-                  <Form.Label>Region:</Form.Label>
+                  <Form.Label>Type*:</Form.Label>
                   <Form.Control
                     type="text"
-                    value={wine.region}
-                    name="region"
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-
-                <Form.Group>
-                  <Form.Label>Country*:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={wine.country}
-                    name="country"
+                    value={wine.type}
+                    name="type"
                     onChange={handleChange}
                     required
                   />

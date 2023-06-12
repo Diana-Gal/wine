@@ -6,6 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import ReactStars from "react-rating-stars-component";
 import { doc, updateDoc } from "firebase/firestore";
 import "../styles.css";
+import WineExtended from "./wineExtended";
 //comp primeste proprietati prin parametrul props care sunt apoi destructurate
 const Wine = (props) => {
   const {
@@ -22,6 +23,8 @@ const Wine = (props) => {
     handleEditWine,
     handleDeleteWine,
   } = props; //destructurare props
+
+  const [modalShow, setModalShow] = useState(false);
 
   const calculateTotalRating = () => {
     if (ratings.length < 1) return;
@@ -52,7 +55,10 @@ const Wine = (props) => {
   }, []);
 
   const stil = {
-    text: {},
+    ratingStyle: {
+      fontSize: "50px",
+      marginBottom: "0",
+    },
     title: {
       fontSize: "1.4rem",
       textAlign: "center",
@@ -90,9 +96,13 @@ const Wine = (props) => {
     setTotalRating(calculateTotalRating());
   };
 
+  const onClickCard = () => {
+    setModalShow(true);
+  };
+
   return (
     <>
-      <Card className="h-100 card-custom">
+      <Card className="h-100 card-custom" onClick={onClickCard}>
         <Card.Body style={stil.cardBody}>
           <Container fluid>
             <Row>
@@ -103,44 +113,44 @@ const Wine = (props) => {
                   src={"images/" + src}
                 />
               </Col>
-              <Col className="justify-content-center">
-                <Card.Text style={stil.text}>
-                  <strong>{totalRating}</strong> ({ratings.length}{" "}
-                  {ratings.length > 1 ? "ratings" : "rating"})
-                </Card.Text>
+              <Col className="justify-content-center text-center d-flex flex-column align-items-center">
+                <Card.Text style={stil.ratingStyle}>{totalRating}</Card.Text>
                 <ReactStars
                   key={totalRating} // Add key prop with totalRating as the value
                   value={totalRating}
                   isHalf={true}
                   count={5}
                   onChange={ratingChanged}
-                  size={28}
+                  size={20}
                   activeColor="#872424"
                   color="#e3e3e3"
                 />
+                <Card.Text>
+                  ({ratings.length} {ratings.length > 1 ? "ratings" : "rating"})
+                </Card.Text>
               </Col>
             </Row>
             <Row>
               <Card.Title style={stil.title}>{name}</Card.Title>
             </Row>
             <Row>
-              <Card.Text style={stil.text}>
+              <Card.Text className="mb-1">
                 <strong>Country: </strong>
                 {country}
               </Card.Text>
-              <Card.Text style={stil.text}>
+              <Card.Text className="mb-1">
                 <strong>Region: </strong>
                 {region}
               </Card.Text>
-              <Card.Text style={stil.text}>
+              <Card.Text className="mb-1">
                 <strong>Varietal: </strong>
                 {varietal}
               </Card.Text>
-              <Card.Text style={stil.text}>
+              <Card.Text className="mb-1">
                 <strong>Type: </strong>
                 {type}
               </Card.Text>
-              <Card.Text style={stil.text}>
+              <Card.Text className="mb-3">
                 <strong>Vintage: </strong>
                 {year}
               </Card.Text>
@@ -161,6 +171,7 @@ const Wine = (props) => {
           ""
         )}
       </Card>
+      <WineExtended show={modalShow} onHide={() => setModalShow(false)} />
     </>
   );
 };
