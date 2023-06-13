@@ -70,6 +70,13 @@ const NavWine = () => {
                 <BsPostcard size="1.5em" /> Blog
               </Nav.Link>
             </LinkContainer>
+            {loggedIn && isAdmin ? (
+              <LinkContainer to="/addBlog">
+                <Nav.Link>
+                  <FaPlus size="1.25em" /> Add Blog
+                </Nav.Link>
+              </LinkContainer>
+            ) : null}
             <LinkContainer to="/about">
               <Nav.Link>
                 <GoLightBulb size="1.25em" />
