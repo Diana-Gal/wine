@@ -29,12 +29,12 @@ const Blog = (props) => {
 
   const editSelectedBlog = (id) => {
     // Implement your edit logic here
-    console.log("Edit blog with ID:", id);
+    navigate(`/editWine/${id}`);
   };
 
-  const deleteBlog = (id) => {
+  const deleteBlog = async (id) => {
     // Implement your delete logic here
-    console.log("Delete blog with ID:", id);
+    await deleteDoc(doc(db, "blog", id));
   };
 
   return (
