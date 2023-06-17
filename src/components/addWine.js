@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { db } from "../config/firebase";
 import { getDoc, doc, addDoc, collection, updateDoc } from "firebase/firestore";
 import NavWine from "./NavWine";
+import FooterWine from "./FooterWine";
 //useState: functie-admite parametri care sunt folositi pt a impune valoarea initiala a variabilelor
 //Componenta utilizează hook-ul "useState" pentru a gestiona starea componentei.
 const AddWine = () => {
@@ -85,9 +86,7 @@ const AddWine = () => {
         </Alert>
       )}
       <NavWine />
-      <Container
-        className="d-flex mt-4 justify-content-center"
-        style={{ minHeight: "100vh" }}>
+      <Container className="d-flex mt-4 justify-content-center">
         <div className="w-100" style={{ maxWidth: "700px" }}>
           <Card>
             <Card.Body>
@@ -170,7 +169,7 @@ const AddWine = () => {
                   <Form.Label>Description:</Form.Label>
                   <Form.Control
                     as="textarea"
-                    rows={3}
+                    rows={8}
                     value={wine.description}
                     name="description"
                     onChange={handleChange}
@@ -188,6 +187,7 @@ const AddWine = () => {
           </Card>
         </div>
       </Container>
+      <FooterWine />
     </>
   );
 };

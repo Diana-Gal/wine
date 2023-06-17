@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { Form, Button, Card, Container } from "react-bootstrap";
+import FooterWine from "./FooterWine";
 
 const Signup = () => {
   const navigate = useNavigate();

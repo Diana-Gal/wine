@@ -4,19 +4,16 @@ import { useParams, useNavigate } from "react-router-dom";
 import { db } from "../config/firebase";
 import { getDoc, doc, addDoc, collection, updateDoc } from "firebase/firestore";
 import NavWine from "./NavWine";
+import FooterWine from "./FooterWine";
 //useState: functie-admite parametri care sunt folositi pt a impune valoarea initiala a variabilelor
 //Componenta utilizează hook-ul "useState" pentru a gestiona starea componentei.
 const AddBlog = () => {
   const { id } = useParams();
   const [blog, setBlog] = useState({
-    name: "",
-    type: "",
-    varietal: "",
-    region: "",
-    country: "",
-    year: null,
-    src: "",
+    title: "",
+    date: null,
     description: "",
+    src: "",
   });
   const [alert, setAlert] = useState(null); // New state for success/error
   const [validated, setValidated] = useState(false);
@@ -24,8 +21,10 @@ const AddBlog = () => {
 
   useEffect(() => {
     const getBlog = async (id) => {
-      const ref = await getDoc(doc(db, "blogs", id));
-      setBlog(ref.data());
+      const ref = await getDoc(doc(db, "blog", id));
+      console.log(ref.data());
+      let blogData = ref.data();
+      setBlog(blogData);
     };
 
     if (id) {
@@ -35,15 +34,14 @@ const AddBlog = () => {
 
   //Funcția "addBlog" adaugă un vin nou în baza de date
   const addBlog = async () => {
-    blog.ratings = [];
-    await addDoc(collection(db, "blogs"), blog);
-    navigate(`/`);
+    await addDoc(collection(db, "blog"), blog);
+    navigate(`/blog`);
   };
 
   const editBlog = async () => {
     //Functie care updateaza datele despre vinul ales pentru editare
-    await updateDoc(doc(db, "blogs", id), blog);
-    navigate(`/`);
+    await updateDoc(doc(db, "blog", id), blog);
+    navigate(`/blog`);
   };
 
   //am creat un obiect blog care il transmit la app prin apel fct props.transfer
@@ -85,9 +83,7 @@ const AddBlog = () => {
         </Alert>
       )}
       <NavWine />
-      <Container
-        className="d-flex mt-4 justify-content-center"
-        style={{ minHeight: "100vh" }}>
+      <Container className="d-flex mt-4 justify-content-center">
         <div className="w-100" style={{ maxWidth: "700px" }}>
           <Card>
             <Card.Body>
@@ -149,6 +145,7 @@ const AddBlog = () => {
           </Card>
         </div>
       </Container>
+      <FooterWine />
     </>
   );
 };

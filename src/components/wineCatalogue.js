@@ -126,7 +126,7 @@ const WineCatalogue = () => {
           md={2}
           lg={3}
           xl={4}
-          className="g-4 justify-content-md-center">
+          className="g-4 justify-content-md-center mb-6">
           {list}
         </Row>
         <Row className="mt-4"></Row>

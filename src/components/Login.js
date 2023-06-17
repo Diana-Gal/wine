@@ -3,6 +3,8 @@ import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../config/firebase";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Form, Button, Card, Container } from "react-bootstrap";
+import FooterWine from "./FooterWine";
+
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");

@@ -4,8 +4,9 @@ import Blog from "./blog";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../config/firebase";
+import FooterWine from "./FooterWine";
 
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 
 const BlogList = () => {
   const [blogs, setBlog] = useState([]);
@@ -28,25 +29,18 @@ const BlogList = () => {
 
   const handleDeleteBlog = async (id) => {
     // Implement your delete logic here
-    console.log("Delete blog with ID:", id);
+    await deleteDoc(doc(db, "blog", id));
+    getBlogList();
   };
 
-  const handleEditBlog = (id) => {
+  const handleEditBlog = async (id) => {
     // Implement your edit logic here
     console.log("Edit blog with ID:", id);
     navigate(`/editBlog/${id}`);
   };
 
   const blogList = blogs.map((item) => {
-    const {
-      src,
-      date,
-      title,
-      description,
-      handleDeleteBlog,
-      handleEditBlog,
-      id,
-    } = item;
+    const { src, date, title, description, id } = item;
 
     return (
       <Col key={id}>
@@ -55,6 +49,7 @@ const BlogList = () => {
           date={date}
           title={title}
           description={description}
+          id={id}
           handleDeleteBlog={handleDeleteBlog}
           handleEditBlog={handleEditBlog}
         />
@@ -72,11 +67,11 @@ const BlogList = () => {
           lg={2}
           xl={2}
           xxl={2}
-          className="mt-4 g-4 justify-content-md-center"
-        >
+          className="mt-4 g-4 justify-content-md-center mb-6">
           {blogList}
         </Row>
       </Container>
+      <FooterWine />
     </>
   );
 };

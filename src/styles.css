@@ -1,3 +1,8 @@
+.image-modal-col {
+  max-height: 570px;
+  max-width: 550px;
+}
+
 .wine-image {
   max-height: 100%;
   height: 100%;
@@ -22,8 +27,6 @@
   object-fit: cover;
   transition: transform 0.3s;
   cursor: pointer;
-  border-top-left-radius: 0 !important;
-  border-top-right-radius: 0 !important;
 }
 
 .card-wines {
@@ -43,7 +46,6 @@
 .card-blog {
   width: 100%;
   max-height: 700px;
-  max-width: 550px;
   justify-content: space-evenly;
   transition: transform 0.3s ease;
 }
@@ -93,8 +95,7 @@
 }
 
 .blog-header {
-  background-color: #722f37 !important;
-  color: white !important;
+  color: #722f37 !important;
   height: 40px;
 }
 
@@ -119,15 +120,14 @@
   background-color: rgba(114, 47, 55, var(--bs-bg-opacity)) !important;
 }
 
-.bg-footer {
-  background-color: #eae0da !important;
-}
-
 .footer {
-  height: 100px;
-  max-height: 100px;
+  background-color: #eae0da !important;
 }
 
 .fa-button {
   color: #722f37 !important;
+}
+
+.mb-6 {
+  margin-bottom: 6rem !important;
 }

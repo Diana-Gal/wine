@@ -160,26 +160,25 @@ const Wine = (props) => {
         </Card.Body>
         {isAdmin ? (
           <Card.Footer>
-            <Button
-              className="fa-button"
-              variant="link"
-              onClick={() => handleEditWine(id)}
-            >
-              <BsPencilSquare size="1.25em" />
+            <Button className="blog-button" onClick={() => handleEditWine(id)}>
+              <BsPencilSquare size="1.25em" /> Edit
             </Button>
             <Button
-              className="fa-button"
-              variant="link"
-              onClick={() => handleDeleteWine(id)}
-            >
-              <BsTrashFill size="1.25em" />
+              className="blog-button"
+              onClick={() => handleDeleteWine(id)}>
+              <BsTrashFill size="1.25em" /> Delete
             </Button>
           </Card.Footer>
         ) : (
           ""
         )}
       </Card>
-      <WineExtended show={modalShow} onHide={() => setModalShow(false)} />
+      <WineExtended
+        totalRating={totalRating}
+        wine={props}
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
     </>
   );
 };

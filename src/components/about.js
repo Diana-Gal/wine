@@ -1,13 +1,14 @@
 import React from "react";
 import { Container, Image } from "react-bootstrap";
 import NavWine from "./NavWine";
+import FooterWine from "./FooterWine";
 
 const About = () => {
   return (
     <>
       <NavWine />
       <Container
-        className="d-flex mt-4 justify-content-center"
+        className="d-flex mt-4 justify-content-center mb-6"
         style={{ minHeight: "100vh" }}>
         <div className="w-100">
           <h1 style={{ textAlign: "center" }}>
@@ -72,6 +73,7 @@ const About = () => {
           </p>
         </div>
       </Container>
+      <FooterWine />
     </>
   );
 };

@@ -1,9 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaGithub, FaFacebookSquare, FaLinkedin } from "react-icons/fa";
 import { BsPostcard } from "react-icons/bs";
 import { GoLightBulb } from "react-icons/go";
 import { SlLogout, SlLogin } from "react-icons/sl";
-import { Container, Navbar, Nav, Button, NavLink } from "react-bootstrap";
+import {
+  Container,
+  Navbar,
+  Nav,
+  Button,
+  NavLink,
+  Overlay,
+  Tooltip,
+} from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { signOut } from "firebase/auth";
 import { auth, checkIsAdmin } from "../config/firebase";
@@ -16,6 +24,9 @@ const FooterWine = () => {
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
+
+  const emailRef = useRef(null);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -47,8 +58,21 @@ const FooterWine = () => {
       });
   };
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText("wines4all@gmail.com");
+    setShowTooltip(true);
+  };
+
+  const hideTooltip = () => {
+    setShowTooltip(false);
+  };
   return (
-    <Navbar className="footer" variant="light" bg="footer" expand="md">
+    <Navbar
+      className="footer"
+      variant="light"
+      bg="footer"
+      expand="md"
+      fixed="bottom">
       <Container fluid>
         <Nav className="m-auto flex-column flex-md-row align-items-center">
           <div className="d-flex flex-md-row flex-column">
@@ -71,9 +95,23 @@ const FooterWine = () => {
             <Nav.Item>Contact us at:</Nav.Item>
           </div>
           <div className="text-center mt-3 mt-md-0">
-            <Nav.Link className="align-content-end">
+            <Nav.Link
+              ref={emailRef}
+              className="align-content-end"
+              onClick={copyToClipboard}
+              onMouseOut={hideTooltip}>
               wines4all@gmail.com
             </Nav.Link>
+            <Overlay
+              target={emailRef.current}
+              show={showTooltip}
+              placement="top">
+              {(props) => (
+                <Tooltip id="tooltip-email" {...props}>
+                  Email copied to clipboard!
+                </Tooltip>
+              )}
+            </Overlay>
           </div>
         </Nav>
       </Container>
