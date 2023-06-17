@@ -25,10 +25,6 @@ export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app); //  Se include pentru a accesa firestore
 // Set admin privilege on the user corresponding to uid.
 export const checkIsAdmin = async (uid) => {
-  if (uid != "xoBRSZ5W4UeWKDnBLITMcA3Mgph2") {
-    return;
-  }
-
   const ref = await getDoc(doc(db, "users", uid));
   const userData = ref.data();
   return userData?.isAdmin;

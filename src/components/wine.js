@@ -102,8 +102,8 @@ const Wine = (props) => {
 
   return (
     <>
-      <Card className="h-100 card-custom" onClick={onClickCard}>
-        <Card.Body style={stil.cardBody}>
+      <Card className="h-100 card-wines" onClick={onClickCard}>
+        <Card.Body>
           <Container fluid>
             <Row>
               <Col className="wine-image-col">
@@ -163,13 +163,15 @@ const Wine = (props) => {
             <Button
               className="fa-button"
               variant="link"
-              onClick={() => handleEditWine(id)}>
+              onClick={() => handleEditWine(id)}
+            >
               <BsPencilSquare size="1.25em" />
             </Button>
             <Button
               className="fa-button"
               variant="link"
-              onClick={() => handleDeleteWine(id)}>
+              onClick={() => handleDeleteWine(id)}
+            >
               <BsTrashFill size="1.25em" />
             </Button>
           </Card.Footer>

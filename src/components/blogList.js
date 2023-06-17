@@ -1,5 +1,5 @@
 import NavWine from "./NavWine";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import Blog from "./blog";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -49,23 +49,33 @@ const BlogList = () => {
     } = item;
 
     return (
-      <Blog
-        key={id}
-        src={src}
-        date={date}
-        title={title}
-        description={description}
-        handleDeleteBlog={handleDeleteBlog}
-        handleEditBlog={handleEditBlog}
-      />
+      <Col key={id}>
+        <Blog
+          src={src}
+          date={date}
+          title={title}
+          description={description}
+          handleDeleteBlog={handleDeleteBlog}
+          handleEditBlog={handleEditBlog}
+        />
+      </Col>
     );
   });
 
   return (
     <>
       <NavWine />
-      <Container fluid>
-        <Row className="mb-4">{blogList}</Row>
+      <Container>
+        <Row
+          xs={1}
+          md={2}
+          lg={2}
+          xl={2}
+          xxl={2}
+          className="mt-4 g-4 justify-content-md-center"
+        >
+          {blogList}
+        </Row>
       </Container>
     </>
   );

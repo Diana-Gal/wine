@@ -7,6 +7,8 @@ import "../styles.css";
 
 const Blog = (props) => {
   const { src, title, date, description, id } = props;
+  const shortDescription =
+    "This is a short description This is a short descriptionThis is a short descriptionThis is a short descriptionThis is a short descriptionThis is a short descriptionThis is a short description \n shortDescriptionshortDescriptionshortDescriptionshortDescriptionshortDescriptionshortDescription";
   const formattedDate = date.toDate().toLocaleDateString();
 
   const [isAdmin, setIsAdmin] = useState(false);
@@ -36,34 +38,41 @@ const Blog = (props) => {
   };
 
   return (
-    <Row className="row-cols-1 row-cols-md-2 g-4">
-      <Col>
-        <Card>
-          <Card.Img variant="top" src={src} alt="Blog Image" />
-          <Card.Body>
-            <Card.Title>{title.toUpperCase()}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">
-              {formattedDate}
-            </Card.Subtitle>
-            <Card.Text>{description}</Card.Text>
-            {isAdmin && (
-              <div>
-                <Button
-                  variant="primary"
-                  onClick={() => editSelectedBlog(id)}
-                  className="me-2">
-                  <BsPencilSquare /> Edit
-                </Button>
-                <Button variant="danger" onClick={() => deleteBlog(id)}>
-                  <BsTrashFill /> Delete
-                </Button>
-              </div>
-            )}
-          </Card.Body>
-        </Card>
-      </Col>
-      {/* Add more Col components for additional blog posts */}
-    </Row>
+    <Card className="h-100 card-blog">
+      <Card.Header className="d-flex justify-content-between blog-header">
+        <div className="d-flex align-items-center">
+          <Card.Text>Posted on: {formattedDate}</Card.Text>
+        </div>
+        <div className="d-flex align-items-center">
+          <Card.Text>Last changed: 1 minute ago</Card.Text>
+        </div>
+      </Card.Header>
+      <Card.Img
+        className="blog-image"
+        variant="top"
+        src={"images/" + src}
+        alt="Blog Image"
+      />
+      <Card.Body>
+        <Card.Title className="blog-title">{title}</Card.Title>
+        <Card.Text>{shortDescription}</Card.Text>
+      </Card.Body>
+      <Card.Footer>
+        {isAdmin && (
+          <div>
+            <Button
+              onClick={() => editSelectedBlog(id)}
+              className="me-2 blog-button"
+            >
+              <BsPencilSquare size="1.25em" /> Edit
+            </Button>
+            <Button className="blog-button" onClick={() => deleteBlog(id)}>
+              <BsTrashFill size="1.25em" /> Delete
+            </Button>
+          </div>
+        )}
+      </Card.Footer>
+    </Card>
   );
 };
 

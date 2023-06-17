@@ -1,7 +1,4 @@
 .wine-image {
-  /*width: 100%;
-  
-  */
   max-height: 100%;
   height: 100%;
   object-fit: scale-down;
@@ -19,7 +16,17 @@
   transform: scale(1.2);
 }
 
-.card-custom {
+.blog-image {
+  max-height: 250px;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+  cursor: pointer;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+.card-wines {
   width: 100%;
   max-width: 500px;
   max-height: 700px;
@@ -27,7 +34,21 @@
   transition: transform 0.3s ease;
 }
 
-.card-custom:hover {
+.card-wines:hover {
+  transform: translateY(-5px) scale(1.002);
+  box-shadow: 0 4px 6px rgba(143, 16, 16, 0.3);
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+.card-blog {
+  width: 100%;
+  max-height: 700px;
+  max-width: 550px;
+  justify-content: space-evenly;
+  transition: transform 0.3s ease;
+}
+
+.card-blog:hover {
   transform: translateY(-5px) scale(1.002);
   box-shadow: 0 4px 6px rgba(143, 16, 16, 0.3);
   transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
@@ -69,6 +90,28 @@
   color: white !important;
   background-color: #722f37 !important;
   border-color: #722f37 !important;
+}
+
+.blog-header {
+  background-color: #722f37 !important;
+  color: white !important;
+  height: 40px;
+}
+
+.blog-title {
+  text-transform: uppercase;
+  font-weight: 600 !important;
+  font-smooth: auto;
+  text-align: center;
+}
+
+.blog-button {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: #722f37 !important;
+  text-align: center;
+  align-items: center;
+  align-content: center;
 }
 
 .bg-wine {
