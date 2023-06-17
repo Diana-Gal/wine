@@ -13,6 +13,8 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+import FooterWine from "./FooterWine";
+
 const WineCatalogue = () => {
   const [wines, setWines] = useState([]);
   const navigate = useNavigate();
@@ -117,17 +119,19 @@ const WineCatalogue = () => {
         <Row className="mb-4" style={filterRowStyle}>
           <WineFilters wineList={wines} getWineList={getWineList} />
         </Row>
+      </Container>
+      <Container>
         <Row
           xs={1}
           md={2}
           lg={3}
           xl={4}
-          xxl={5}
           className="g-4 justify-content-md-center">
           {list}
         </Row>
         <Row className="mt-4"></Row>
       </Container>
+      <FooterWine />
     </>
   );
 };

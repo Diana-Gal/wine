@@ -160,11 +160,17 @@ const Wine = (props) => {
         </Card.Body>
         {isAdmin ? (
           <Card.Footer>
-            <Button variant="link" onClick={() => handleEditWine(id)}>
-              <BsPencilSquare />
+            <Button
+              className="fa-button"
+              variant="link"
+              onClick={() => handleEditWine(id)}>
+              <BsPencilSquare size="1.25em" />
             </Button>
-            <Button variant="link" onClick={() => handleDeleteWine(id)}>
-              <BsTrashFill />
+            <Button
+              className="fa-button"
+              variant="link"
+              onClick={() => handleDeleteWine(id)}>
+              <BsTrashFill size="1.25em" />
             </Button>
           </Card.Footer>
         ) : (

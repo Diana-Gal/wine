@@ -86,7 +86,7 @@ const AddBlog = () => {
       )}
       <NavWine />
       <Container
-        className="d-flex align-items-center justify-content-center"
+        className="d-flex mt-4 justify-content-center"
         style={{ minHeight: "100vh" }}>
         <div className="w-100" style={{ maxWidth: "700px" }}>
           <Card>
@@ -127,13 +127,14 @@ const AddBlog = () => {
                 </Form.Group>
 
                 <Form.Group>
-                  <Form.Label>Description:</Form.Label>
+                  <Form.Label>Description*:</Form.Label>
                   <Form.Control
                     as="textarea"
-                    rows={3}
+                    rows={20}
                     value={blog.description}
                     name="description"
                     onChange={handleChange}
+                    required
                   />
                 </Form.Group>
 

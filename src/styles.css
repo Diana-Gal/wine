@@ -75,3 +75,16 @@
   --bs-bg-opacity: 1;
   background-color: rgba(114, 47, 55, var(--bs-bg-opacity)) !important;
 }
+
+.bg-footer {
+  background-color: #eae0da !important;
+}
+
+.footer {
+  height: 100px;
+  max-height: 100px;
+}
+
+.fa-button {
+  color: #722f37 !important;
+}
