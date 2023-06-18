@@ -179,9 +179,14 @@ const AddWine = () => {
                 <Form.Group>
                   <Form.Label>* Indicates a required field</Form.Label>
                 </Form.Group>
-                <Button className="w-100 mt-2 button" type="submit">
-                  {id ? "Edit Wine" : "Add Wine"}
-                </Button>
+                <div className="d-flex justify-content-center">
+                  <Button
+                    className="w-50 mt-2 button align-self-center"
+                    type="submit"
+                  >
+                    {id ? "Edit Wine" : "Add Wine"}
+                  </Button>
+                </div>
               </Form>
             </Card.Body>
           </Card>

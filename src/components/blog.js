@@ -4,6 +4,7 @@ import { BsTrashFill, BsPencilSquare } from "react-icons/bs";
 import { auth, checkIsAdmin, db } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import "../styles.css";
+import { FaRegComments } from "react-icons/fa";
 import BlogExtended from "./blogExtended";
 const Blog = (props) => {
   const {
@@ -24,6 +25,7 @@ const Blog = (props) => {
 
   // Format the date as "DD/MM/YYYY"
   const formattedDate = dateToFormat.toLocaleDateString("en-GB");
+  const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [modalShow, setModalShow] = useState(false);
@@ -33,6 +35,7 @@ const Blog = (props) => {
         setIsLoggedIn(true);
         const adminCheck = await checkIsAdmin(user.uid);
         setIsAdmin(adminCheck);
+        setUser(user);
       } else {
         setIsLoggedIn(false);
         setIsAdmin(false);
@@ -58,28 +61,36 @@ const Blog = (props) => {
           <Card.Subtitle className="mb-2">
             Posted on: {formattedDate}
           </Card.Subtitle>
-          <Card.Text>{description}</Card.Text>
+          <Card.Text className="description-overflow">{description}</Card.Text>
         </Card.Body>
-        <Card.Footer>
+        <Card.Footer className="d-flex align-items-center">
           {isAdmin && (
             <div>
               <Button
                 onClick={() => handleEditBlog(id)}
-                className="me-2 blog-button">
+                className="me-2 blog-button"
+              >
                 <BsPencilSquare size="1.25em" /> Edit
               </Button>
               <Button
                 className="blog-button"
-                onClick={() => handleDeleteBlog(id)}>
+                onClick={() => handleDeleteBlog(id)}
+              >
                 <BsTrashFill size="1.25em" /> Delete
               </Button>
             </div>
           )}
+          <Button className="blog-button d-flex align-items-center">
+            <FaRegComments size="1.5em" className="me-1 mt-1" />
+            Comments
+          </Button>
         </Card.Footer>
       </Card>
       <BlogExtended
         blog={props}
+        date={formattedDate}
         show={modalShow}
+        user={user}
         onHide={() => setModalShow(false)}
       />
     </>

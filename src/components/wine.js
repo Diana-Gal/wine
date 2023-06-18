@@ -154,7 +154,9 @@ const Wine = (props) => {
                 <strong>Vintage: </strong>
                 {year}
               </Card.Text>
-              <Card.Text className="wine-description">{description}</Card.Text>
+              <Card.Text className="description-overflow">
+                {description}
+              </Card.Text>
             </Row>
           </Container>
         </Card.Body>
@@ -165,7 +167,8 @@ const Wine = (props) => {
             </Button>
             <Button
               className="blog-button"
-              onClick={() => handleDeleteWine(id)}>
+              onClick={() => handleDeleteWine(id)}
+            >
               <BsTrashFill size="1.25em" /> Delete
             </Button>
           </Card.Footer>

@@ -7,6 +7,7 @@ import {
   Image,
   ModalHeader,
 } from "react-bootstrap";
+import { RiCloseLine } from "react-icons/ri";
 import ReactStars from "react-rating-stars-component";
 const WineExtended = (props) => {
   //destructuram props
@@ -34,12 +35,13 @@ const WineExtended = (props) => {
   return (
     <Modal
       keyboard={true}
-      scrollable={false}
+      scrollable={true}
       show={show}
       onHide={onHide}
       size="xl"
       aria-labelledby="contained-modal-title-vcenter"
-      centered>
+      centered
+    >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           <h3>{name}</h3>
@@ -89,8 +91,14 @@ const WineExtended = (props) => {
 
         {splitDescription()}
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={onHide}>Close</Button>
+      <Modal.Footer className="modal-footer">
+        <Button
+          className="blog-button d-flex align-items-center"
+          onClick={onHide}
+        >
+          <RiCloseLine size="1.5em" className="mt-1" />
+          Close
+        </Button>
       </Modal.Footer>
     </Modal>
   );

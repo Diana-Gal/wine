@@ -67,7 +67,8 @@ const BlogList = () => {
           lg={2}
           xl={2}
           xxl={2}
-          className="mt-4 g-4 justify-content-md-center mb-6">
+          className="mt-1 g-4 justify-content-md-center mb-6"
+        >
           {blogList}
         </Row>
       </Container>
