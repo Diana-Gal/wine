@@ -21,7 +21,6 @@ const WineExtended = (props) => {
     type,
     year,
     ratings,
-    id,
   } = wine;
 
   const splitDescription = () => {

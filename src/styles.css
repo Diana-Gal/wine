@@ -3,6 +3,10 @@
   max-width: 550px;
 }
 
+.image-modal-blog-col {
+  max-height: 470px;
+}
+
 .wine-image {
   max-height: 100%;
   height: 100%;
@@ -10,6 +14,18 @@
   padding: 2px 0px;
   transition: transform 0.3s;
   cursor: pointer;
+}
+
+.blog-modal-image {
+  max-height: 700px;
+  height: 100%;
+  object-fit: fill;
+  transition: transform 0.3s;
+  cursor: pointer;
+  border-top-left-radius: calc(0.375rem - 1px);
+  border-top-right-radius: calc(0.375rem - 1px);
+  border-bottom-right-radius: calc(0.375rem - 1px);
+  border-bottom-left-radius: calc(0.375rem - 1px);
 }
 
 .wine-image-col {
@@ -22,7 +38,7 @@
 }
 
 .blog-image {
-  max-height: 250px;
+  max-height: 300px;
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s;
@@ -45,7 +61,7 @@
 
 .card-blog {
   width: 100%;
-  max-height: 700px;
+  max-height: 784px;
   justify-content: space-evenly;
   transition: transform 0.3s ease;
 }
