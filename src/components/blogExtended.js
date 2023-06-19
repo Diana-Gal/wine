@@ -5,16 +5,14 @@ import {
   Col,
   Container,
   Image,
-  ModalHeader,
   Form,
-  Card,
 } from "react-bootstrap";
-import { BsTrashFill, BsPencilSquare } from "react-icons/bs";
+import CommentsList from "./commentsList";
+
 import { RiCloseLine } from "react-icons/ri";
 import { FaRegComments } from "react-icons/fa";
 const BlogExtended = (props) => {
   const { blog, show, onHide, date, user } = props;
-  console.log(user);
   const { src, title, description } = blog;
   const splitDescription = () => {
     const descriptionArray = description.split("\\n");
@@ -64,44 +62,8 @@ const BlogExtended = (props) => {
                   required
                 />
               </Form.Group>
-              <Form.Group className="mt-5 mb-3">
-                <Card className="comment">
-                  <Card.Body>
-                    <Row>
-                      <Col md="auto">
-                        <Image src={user?.photoURL} roundedCircle></Image>
-                      </Col>
-                      <Col>
-                        <Row className="d-flex align-items-center justify-content-between">
-                          <Col>
-                            <p className="mb-1">
-                              {user.displayName}{" "}
-                              <span className="small">- 2 minutes ago</span>
-                            </p>
-                          </Col>
-                          <Col className="d-flex justify-content-end">
-                            <Button className="blog-button me-1">
-                              <BsPencilSquare size="1.25em" className="me-1" />
-                              Edit
-                            </Button>
-                            <Button className="blog-button">
-                              <BsTrashFill size="1.25em" className="me-1" />
-                              Delete
-                            </Button>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <p>
-                              This is just a dummy comment. Don't take it into
-                              cosideration.
-                            </p>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
+              <Form.Group className="mt-4 mb-3">
+                <CommentsList />
               </Form.Group>
             </Form>
           </Row>

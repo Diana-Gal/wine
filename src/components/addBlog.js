@@ -14,6 +14,7 @@ const AddBlog = () => {
     date: null,
     description: "",
     src: "",
+    comments: [],
   });
   const [alert, setAlert] = useState(null); // New state for success/error
   const [validated, setValidated] = useState(false);
