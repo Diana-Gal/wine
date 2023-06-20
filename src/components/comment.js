@@ -2,16 +2,15 @@ import { Card, Row, Col, Button, Image } from "react-bootstrap";
 import { BsTrashFill, BsPencilSquare } from "react-icons/bs";
 const Comment = (props) => {
   const { userName, src, id, date, message } = props;
-  const dateParts = date.split("-");
+  /*const dateParts = date.split("-");
   const dateToFormat = new Date(
     parseInt(dateParts[0]),
     parseInt(dateParts[1]) - 1,
     parseInt(dateParts[2])
   );
-
+*/
   // Format the date as "DD/MM/YYYY"
-  const formattedDate = dateToFormat.toLocaleDateString("en-GB");
-};
+  //const formattedDate = dateToFormat.toLocaleDateString("en-GB");
 
   return (
     <Card className="mb-2 comment">
@@ -25,7 +24,7 @@ const Comment = (props) => {
               <Col>
                 <p className="mb-1">
                   {userName}
-                  <span className="small"> - {formattedDate}</span>
+                  <span className="small"> - 1 min ago</span>
                 </p>
               </Col>
               <Col className="d-flex justify-content-end">
