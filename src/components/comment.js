@@ -1,16 +1,30 @@
+import { useState, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, checkIsAdmin } from "../config/firebase";
 import { Card, Row, Col, Button, Image } from "react-bootstrap";
 import { BsTrashFill, BsPencilSquare } from "react-icons/bs";
 const Comment = (props) => {
-  const { userName, src, id, date, message } = props;
-  /*const dateParts = date.split("-");
-  const dateToFormat = new Date(
-    parseInt(dateParts[0]),
-    parseInt(dateParts[1]) - 1,
-    parseInt(dateParts[2])
-  );
-*/
-  // Format the date as "DD/MM/YYYY"
-  //const formattedDate = dateToFormat.toLocaleDateString("en-GB");
+  const { userName, src, id, userId, date, message, deleteComment } = props;
+
+  const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setIsLoggedIn(true);
+        const adminCheck = await checkIsAdmin(user.uid);
+        setIsAdmin(adminCheck);
+        console.log(user);
+
+        setUser(user);
+      } else {
+        setIsLoggedIn(false);
+        setIsAdmin(false);
+      }
+    });
+  }, []);
 
   return (
     <Card className="mb-2 comment">
@@ -24,19 +38,21 @@ const Comment = (props) => {
               <Col>
                 <p className="mb-1">
                   {userName}
-                  <span className="small"> - 1 min ago</span>
+                  <span className="small"> - {date}</span>
                 </p>
               </Col>
-              <Col className="d-flex justify-content-end">
-                <Button className="blog-button me-1">
-                  <BsPencilSquare size="1.25em" className="me-1" />
-                  Edit
-                </Button>
-                <Button className="blog-button">
-                  <BsTrashFill size="1.25em" className="me-1" />
-                  Delete
-                </Button>
-              </Col>
+              {(isLoggedIn && user?.uid == userId) || isAdmin ? (
+                <Col className="d-flex justify-content-end">
+                  <Button
+                    className="blog-button"
+                    onClick={() => deleteComment(id)}>
+                    <BsTrashFill size="1.25em" className="me-1" />
+                    Delete
+                  </Button>
+                </Col>
+              ) : (
+                ""
+              )}
             </Row>
             <Row>
               <Col>

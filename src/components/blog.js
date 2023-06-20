@@ -73,21 +73,19 @@ const Blog = (props) => {
             <div>
               <Button
                 onClick={() => handleEditBlog(id)}
-                className="me-2 blog-button"
-              >
+                className="me-2 blog-button">
                 <BsPencilSquare size="1.25em" /> Edit
               </Button>
               <Button
                 className="blog-button"
-                onClick={() => handleDeleteBlog(id)}
-              >
+                onClick={() => handleDeleteBlog(id)}>
                 <BsTrashFill size="1.25em" /> Delete
               </Button>
             </div>
           )}
           <Button className="blog-button d-flex align-items-center">
             <FaRegComments size="1.5em" className="me-1 mt-1" />
-            Comments
+            Comments({comments.length})
           </Button>
         </Card.Footer>
       </Card>

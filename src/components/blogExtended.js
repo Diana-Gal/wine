@@ -6,8 +6,9 @@ import {
   Container,
   Image,
   Form,
+  Alert,
 } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import CommentsList from "./commentsList";
 import { RiCloseLine } from "react-icons/ri";
 import { FaRegComments } from "react-icons/fa";
@@ -17,12 +18,13 @@ import { v4 as uuid } from "uuid";
 import { auth, checkIsAdmin, db } from "../config/firebase";
 const BlogExtended = (props) => {
   const { blog, show, onHide, date } = props;
-  const [comments, setComments] = useState([props.comments]);
   const { src, title, description, id } = blog;
+  const [comments, setComments] = useState(props.comments);
   const [newComment, setNewComment] = useState("");
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [alert, setAlert] = useState(null);
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -59,21 +61,47 @@ const BlogExtended = (props) => {
   //Funcția "addComment" adaugă un comment nou in baza de date
   const addComment = async (newComment) => {
     if (!isLoggedIn) {
-      alert("Please Login before adding a comment.");
+      setAlert({
+        type: "danger",
+        message: "Please login before adding a comment!",
+      });
       return;
     }
 
+    const currentDate = new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
     const comment = {
       userName: user.displayName,
       src: user.photoURL,
-      date: new Date().toLocaleDateString("en-GB"),
+      date: currentDate,
       id: uuid(),
       userId: user.uid,
       message: newComment,
     };
 
     // Add the new comment to the existing comments array
-    const updatedComments = [...blog.comments, comment];
+    const updatedComments = [...comments, comment];
+
+    try {
+      await updateDoc(doc(db, "blog", id), { comments: updatedComments });
+    } catch (err) {
+      console.error(err);
+    }
+    setNewComment("");
+    setComments(updatedComments);
+  };
+
+  //Funcția "deleteComment" adaugă un comment nou in baza de date
+  const deleteComment = async (commentId) => {
+    const updatedComments = comments.filter(
+      (comment) => comment.id != commentId
+    );
 
     try {
       await updateDoc(doc(db, "blog", id), { comments: updatedComments });
@@ -93,8 +121,7 @@ const BlogExtended = (props) => {
       size="xl"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      className="m-0"
-    >
+      className="m-0">
       <Modal.Body>
         <Container fluid className="mb-4">
           <Row className="text-center mb-3">
@@ -105,8 +132,7 @@ const BlogExtended = (props) => {
               <Image
                 className="blog-modal-image"
                 fluid
-                src={"images/" + src}
-              ></Image>
+                src={"images/" + src}></Image>
             </Col>
           </Row>
         </Container>
@@ -125,35 +151,50 @@ const BlogExtended = (props) => {
                   placeholder="Add a comment"
                   required
                 />
+
+                {alert && (
+                  <Alert
+                    className="mt-2 mb-0"
+                    variant={alert.type}
+                    onClose={() => setAlert(null)}
+                    dismissible>
+                    {alert.message}
+                  </Alert>
+                )}
+
+                <div className="d-flex justify-content-end">
+                  <Button
+                    className="w-20 mt-2 button align-self-center"
+                    type="submit">
+                    Add Comment
+                  </Button>
+                </div>
               </Form.Group>
-              <div className="d-flex justify-content-center">
-                <Button
-                  className="w-50 mt-2 button align-self-center"
-                  type="submit"
-                >
-                  Add Comment
-                </Button>
-              </div>
             </Form>
           </Row>
           <Row>
-            <CommentsList comments={comments} />
+            <CommentsList comments={comments} deleteComment={deleteComment} />
           </Row>
         </Container>
       </Modal.Body>
       <Modal.Footer className="modal-footer d-flex justify-content-between align-items-center">
         <div className="d-flex align-items-center">
-          <p className="mb-0 me-1">Posted on: , </p>
-          <Button className="blog-button d-flex align-items-center">
+          <p className="mb-0 me-1">Posted on: {date} </p>
+          <Button
+            className="blog-button d-flex align-items-center"
+            onClick={() =>
+              document
+                .getElementById("comments-list")
+                .scrollIntoView({ behavior: "smooth" })
+            }>
             <FaRegComments size="1.5em" className="me-1 mt-1" />
-            Comments
+            Comments({comments.length})
           </Button>
         </div>
         <div>
           <Button
             className="blog-button d-flex align-items-center"
-            onClick={onHide}
-          >
+            onClick={onHide}>
             <RiCloseLine size="1.5em" className="mt-1" />
             Close
           </Button>
