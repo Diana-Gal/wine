@@ -2,16 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { BsTrashFill, BsPencilSquare } from "react-icons/bs";
 import { auth, checkIsAdmin, db } from "../config/firebase";
+import { updateDoc, doc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import "../styles.css";
 import { FaRegComments } from "react-icons/fa";
 import BlogExtended from "./blogExtended";
+import { v4 as uuid } from "uuid";
 const Blog = (props) => {
+  const [blog, setBlog] = useState(props);
   const {
     src,
     title,
     date,
     description,
+    comments,
     handleDeleteBlog,
     handleEditBlog,
     id,
@@ -35,6 +39,7 @@ const Blog = (props) => {
         setIsLoggedIn(true);
         const adminCheck = await checkIsAdmin(user.uid);
         setIsAdmin(adminCheck);
+        console.log(user);
         setUser(user);
       } else {
         setIsLoggedIn(false);
@@ -45,6 +50,26 @@ const Blog = (props) => {
 
   const onClickCard = () => {
     setModalShow(true);
+  };
+
+  //Funcția "addComment" adaugă un comment nou in baza de date
+  const addComment = async () => {
+    if (!isLoggedIn) {
+      alert("Please Login before adding a comment.");
+      return;
+    }
+
+    const comment = {
+      userName: user.displayName,
+      src: user.photoURL,
+      date: new Date().toLocaleDateString("en-GB"),
+      id: uuid(),
+      userId: user.uid,
+    };
+
+    blog.comments.push(comment);
+
+    await updateDoc(doc(db, "blog", id), blog);
   };
 
   return (
@@ -68,14 +93,12 @@ const Blog = (props) => {
             <div>
               <Button
                 onClick={() => handleEditBlog(id)}
-                className="me-2 blog-button"
-              >
+                className="me-2 blog-button">
                 <BsPencilSquare size="1.25em" /> Edit
               </Button>
               <Button
                 className="blog-button"
-                onClick={() => handleDeleteBlog(id)}
-              >
+                onClick={() => handleDeleteBlog(id)}>
                 <BsTrashFill size="1.25em" /> Delete
               </Button>
             </div>
@@ -89,6 +112,8 @@ const Blog = (props) => {
       <BlogExtended
         blog={props}
         date={formattedDate}
+        comments={comments}
+        addComment={addComment}
         show={modalShow}
         user={user}
         onHide={() => setModalShow(false)}

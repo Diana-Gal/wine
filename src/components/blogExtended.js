@@ -8,11 +8,11 @@ import {
   Form,
 } from "react-bootstrap";
 import CommentsList from "./commentsList";
-
 import { RiCloseLine } from "react-icons/ri";
 import { FaRegComments } from "react-icons/fa";
+
 const BlogExtended = (props) => {
-  const { blog, show, onHide, date, user } = props;
+  const { blog, show, onHide, date, comments, addComment } = props;
   const { src, title, description } = blog;
   const splitDescription = () => {
     const descriptionArray = description.split("\\n");
@@ -31,8 +31,7 @@ const BlogExtended = (props) => {
       size="xl"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      className="m-0"
-    >
+      className="m-0">
       <Modal.Body>
         <Container fluid className="mb-4">
           <Row className="text-center mb-3">
@@ -43,8 +42,7 @@ const BlogExtended = (props) => {
               <Image
                 className="blog-modal-image"
                 fluid
-                src={"images/" + src}
-              ></Image>
+                src={"images/" + src}></Image>
             </Col>
           </Row>
         </Container>
@@ -62,10 +60,17 @@ const BlogExtended = (props) => {
                   required
                 />
               </Form.Group>
-              <Form.Group className="mt-4 mb-3">
-                <CommentsList />
-              </Form.Group>
+              <div className="d-flex justify-content-center">
+                <Button
+                  className="w-50 mt-2 button align-self-center"
+                  type="submit">
+                  Add Comment
+                </Button>
+              </div>
             </Form>
+          </Row>
+          <Row>
+            <CommentsList comments={comments} />
           </Row>
         </Container>
       </Modal.Body>
@@ -80,8 +85,7 @@ const BlogExtended = (props) => {
         <div>
           <Button
             className="blog-button d-flex align-items-center"
-            onClick={onHide}
-          >
+            onClick={onHide}>
             <RiCloseLine size="1.5em" className="mt-1" />
             Close
           </Button>

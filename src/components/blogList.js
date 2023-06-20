@@ -40,7 +40,7 @@ const BlogList = () => {
   };
 
   const blogList = blogs.map((item) => {
-    const { src, date, title, description, id } = item;
+    const { src, date, title, description, id, comments } = item;
 
     return (
       <Col key={id}>
@@ -49,6 +49,7 @@ const BlogList = () => {
           date={date}
           title={title}
           description={description}
+          comments={comments}
           id={id}
           handleDeleteBlog={handleDeleteBlog}
           handleEditBlog={handleEditBlog}
@@ -67,8 +68,7 @@ const BlogList = () => {
           lg={2}
           xl={2}
           xxl={2}
-          className="mt-1 g-4 justify-content-md-center mb-6"
-        >
+          className="mt-1 g-4 justify-content-md-center mb-6">
           {blogList}
         </Row>
       </Container>

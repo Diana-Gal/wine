@@ -141,8 +141,7 @@ const AddBlog = () => {
                 <div className="d-flex justify-content-center">
                   <Button
                     className="w-50 mt-2 button align-self-center"
-                    type="submit"
-                  >
+                    type="submit">
                     {id ? "Edit Blog" : "Add Blog"}
                   </Button>
                 </div>
