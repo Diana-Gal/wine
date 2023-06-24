@@ -31,7 +31,9 @@ const Wine = (props) => {
 
     let ratingsSum = 0;
     ratings.forEach((rating) => (ratingsSum += rating.value));
-    return ratingsSum / ratings.length;
+
+    const averageRating = ratingsSum / ratings.length;
+    return averageRating.toFixed(1);
   };
 
   const [isAdmin, setIsAdmin] = useState(false);
@@ -167,8 +169,7 @@ const Wine = (props) => {
             </Button>
             <Button
               className="blog-button"
-              onClick={() => handleDeleteWine(id)}
-            >
+              onClick={() => handleDeleteWine(id)}>
               <BsTrashFill size="1.25em" /> Delete
             </Button>
           </Card.Footer>
