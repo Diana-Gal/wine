@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../config/firebase";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Form, Button, Card, Container } from "react-bootstrap";
+import { Form, Button, Card, Container, Alert } from "react-bootstrap";
 import FooterWine from "./FooterWine";
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [alert, setAlert] = useState(null); // New state for success/error
   const buttonStyle = {
     color: "white",
     backgroundColor: "#722f37",
@@ -35,6 +35,20 @@ const Login = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+
+        setAlert({
+          type: "danger",
+          message: (
+            <>
+              Email or password incorrect! If you don't have an account, please{" "}
+              <NavLink to="/signup" style={{ color: "#722f37" }}>
+                Sign Up
+              </NavLink>
+              !
+            </>
+          ),
+        });
+
         console.log(errorCode, errorMessage);
       });
   };
@@ -69,6 +83,15 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </Form.Group>
+                {alert && (
+                  <Alert
+                    className="mt-2 mb-0"
+                    variant={alert.type}
+                    onClose={() => setAlert(null)}
+                    dismissible>
+                    {alert.message}
+                  </Alert>
+                )}
                 <Button
                   className="w-100 mt-2"
                   style={buttonStyle}

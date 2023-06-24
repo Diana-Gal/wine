@@ -33,7 +33,7 @@ const Wine = (props) => {
     ratings.forEach((rating) => (ratingsSum += rating.value));
 
     const averageRating = ratingsSum / ratings.length;
-    return averageRating.toFixed(1);
+    return parseFloat(averageRating.toFixed(1));
   };
 
   const [isAdmin, setIsAdmin] = useState(false);

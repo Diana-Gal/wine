@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { Form, Button, Card, Container } from "react-bootstrap";
 import FooterWine from "./FooterWine";
@@ -10,6 +10,7 @@ const Signup = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("");
 
   const buttonStyle = {
     color: "white",
@@ -22,6 +23,8 @@ const Signup = () => {
 
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        updateProfile(userCredential.user, { displayName: userName });
+
         // Signed in
         navigate("/login");
         // ...
@@ -44,6 +47,16 @@ const Signup = () => {
             <Card.Body>
               <h2 className="text-center mb-4">Sign Up</h2>
               <Form>
+                <Form.Group id="userName">
+                  <Form.Label>User Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    placeholder="User Name"
+                    required
+                  />
+                </Form.Group>
                 <Form.Group id="email">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
