@@ -6,7 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { db } from "../config/firebase";
 import FooterWine from "./FooterWine";
 
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  deleteDoc,
+  doc,
+  query,
+  orderBy,
+} from "firebase/firestore";
 
 const BlogList = () => {
   const [blogs, setBlog] = useState([]);
@@ -18,7 +25,8 @@ const BlogList = () => {
 
   const getBlogList = async () => {
     const blogCollection = collection(db, "blog");
-    const blogDocs = await getDocs(blogCollection);
+    const q = query(blogCollection, orderBy("date", "desc")); // Query to order by "date" field in ascending order
+    const blogDocs = await getDocs(q);
     let newBlogs = blogDocs.docs.map((doc) => {
       let newBlog = doc.data();
       newBlog.id = doc.id;

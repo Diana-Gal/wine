@@ -30,9 +30,6 @@ const Comment = (props) => {
     <Card className="mb-2 comment">
       <Card.Body>
         <Row>
-          <Col md="auto">
-            <Image src={src} roundedCircle></Image>
-          </Col>
           <Col>
             <Row className="d-flex align-items-center justify-content-between">
               <Col>

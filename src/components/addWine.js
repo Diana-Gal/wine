@@ -86,7 +86,7 @@ const AddWine = () => {
         </Alert>
       )}
       <NavWine />
-      <Container className="d-flex mt-4 justify-content-center">
+      <Container className="d-flex mt-4 justify-content-center mb-6">
         <div className="w-100" style={{ maxWidth: "700px" }}>
           <Card>
             <Card.Body>
@@ -182,8 +182,7 @@ const AddWine = () => {
                 <div className="d-flex justify-content-center">
                   <Button
                     className="w-50 mt-2 button align-self-center"
-                    type="submit"
-                  >
+                    type="submit">
                     {id ? "Edit Wine" : "Add Wine"}
                   </Button>
                 </div>

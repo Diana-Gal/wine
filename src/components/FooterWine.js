@@ -76,13 +76,18 @@ const FooterWine = () => {
       <Container fluid>
         <Nav className="m-auto flex-column flex-md-row align-items-center">
           <div className="d-flex flex-md-row flex-column">
-            <Nav.Link className="mr-md-3">
+            <Nav.Link
+              href="https://github.com/Diana-Gal?tab=repositories"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mr-md-3">
               <FaGithub size="2em" />
             </Nav.Link>
-            <Nav.Link className="mr-md-3">
-              <FaFacebookSquare size="2em" />
-            </Nav.Link>
-            <Nav.Link>
+            <Nav.Link
+              href="https://www.linkedin.com/in/dianagal/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mr-md-3">
               <FaLinkedin size="2em" />
             </Nav.Link>
           </div>

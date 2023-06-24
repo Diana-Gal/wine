@@ -61,12 +61,17 @@ const Blog = (props) => {
           src={"images/" + src}
           alt="Blog Image"
         />
-        <Card.Body>
+        <Card.Body className="d-flex flex-column align-items-center">
           <Card.Title className="blog-title">{title}</Card.Title>
           <Card.Subtitle className="mb-2">
             Posted on: {formattedDate}
           </Card.Subtitle>
           <Card.Text className="description-overflow">{description}</Card.Text>
+          <Button
+            className="more-button align-self-center"
+            onClick={onClickCard}>
+            <span className="underline-text">Read More</span>
+          </Button>
         </Card.Body>
         <Card.Footer className="d-flex align-items-center">
           {isAdmin && (
