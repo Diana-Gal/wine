@@ -121,7 +121,7 @@ const Wine = (props) => {
                 <Card.Img
                   className="wine-image"
                   variant="top"
-                  src={"wine/images/" + src}
+                  src={"images/" + src}
                 />
               </Col>
               <Col className="justify-content-center text-center d-flex flex-column align-items-center">
