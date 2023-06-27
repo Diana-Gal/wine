@@ -167,3 +167,9 @@
 .mb-6 {
   margin-bottom: 6rem !important;
 }
+
+.button-style {
+  color: white !important;
+  background-color: #722f37 !important;
+  border-color: #722f37 !important;
+}

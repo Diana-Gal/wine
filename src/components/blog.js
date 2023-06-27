@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button, Row, Col } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import { BsTrashFill, BsPencilSquare } from "react-icons/bs";
-import { auth, checkIsAdmin, db } from "../config/firebase";
-import { updateDoc, doc } from "firebase/firestore";
+import { auth, checkIsAdmin } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import "../styles.css";
 import { FaRegComments } from "react-icons/fa";
 import BlogExtended from "./blogExtended";
 
 const Blog = (props) => {
-  const [blog, setBlog] = useState(props);
   const {
     src,
     title,
@@ -19,54 +17,72 @@ const Blog = (props) => {
     handleDeleteBlog,
     handleEditBlog,
     id,
-  } = props;
-  const dateParts = date.split("-");
-  const dateToFormat = new Date(
-    parseInt(dateParts[0]),
-    parseInt(dateParts[1]) - 1,
-    parseInt(dateParts[2])
-  );
+  } = props; //Destructuring props
+
+  // Split the description into paragraphs
+  const splitDescription = () => {
+    const descriptionArray = description.split(/\n/g);
+    const paragraphs = descriptionArray.map((line, index) => (
+      <p key={index}>{line}</p>
+    ));
+    return paragraphs;
+  };
 
   // Format the date as "DD/MM/YYYY"
-  const formattedDate = dateToFormat.toLocaleDateString("en-GB");
+  const formatDate = () => {
+    const dateParts = date.split("-");
+    const dateToFormat = new Date(
+      parseInt(dateParts[0]),
+      parseInt(dateParts[1]) - 1,
+      parseInt(dateParts[2])
+    );
+    return dateToFormat.toLocaleDateString("en-GB");
+  };
+
+  const formattedDate = formatDate();
+
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [modalShow, setModalShow] = useState(false);
+
+  // Check if the user is an admin and set the state accordingly
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setIsLoggedIn(true);
         const adminCheck = await checkIsAdmin(user.uid);
         setIsAdmin(adminCheck);
-
         setUser(user);
       } else {
-        setIsLoggedIn(false);
         setIsAdmin(false);
       }
     });
   }, []);
 
+  // Show the extended blog view when the card is clicked
   const onClickCard = () => {
     setModalShow(true);
   };
 
   return (
     <>
-      <Card className="h-100 card-blog" onClick={onClickCard}>
+      <Card className="h-100 card-blog">
         <Card.Img
+          onClick={onClickCard}
           className="blog-image"
           variant="top"
           src={"images/" + src}
           alt="Blog Image"
         />
-        <Card.Body className="d-flex flex-column align-items-center">
+        <Card.Body
+          onClick={onClickCard}
+          className="d-flex flex-column align-items-center">
           <Card.Title className="blog-title">{title}</Card.Title>
           <Card.Subtitle className="mb-2">
             Posted on: {formattedDate}
           </Card.Subtitle>
-          <Card.Text className="description-overflow">{description}</Card.Text>
+          <Card.Text className="description-overflow">
+            {splitDescription()}
+          </Card.Text>
           <Button
             className="more-button align-self-center"
             onClick={onClickCard}>
@@ -88,7 +104,9 @@ const Blog = (props) => {
               </Button>
             </div>
           )}
-          <Button className="blog-button d-flex align-items-center">
+          <Button
+            onClick={onClickCard}
+            className="blog-button d-flex align-items-center">
             <FaRegComments size="1.5em" className="me-1 mt-1" />
             Comments({comments.length})
           </Button>

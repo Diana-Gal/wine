@@ -1,62 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { FaGithub, FaFacebookSquare, FaLinkedin } from "react-icons/fa";
-import { BsPostcard } from "react-icons/bs";
-import { GoLightBulb } from "react-icons/go";
-import { SlLogout, SlLogin } from "react-icons/sl";
-import {
-  Container,
-  Navbar,
-  Nav,
-  Button,
-  NavLink,
-  Overlay,
-  Tooltip,
-} from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
-import { signOut } from "firebase/auth";
-import { auth, checkIsAdmin } from "../config/firebase";
-import { useNavigate } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
+import React, { useState, useRef } from "react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { Container, Navbar, Nav, Overlay, Tooltip } from "react-bootstrap";
 import "../styles.css";
 
 const FooterWine = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const navigate = useNavigate();
-
   const emailRef = useRef(null);
   const [showTooltip, setShowTooltip] = useState(false);
-
-  useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setLoggedIn(true);
-        setUser(user);
-        const adminCheck = await checkIsAdmin(user.uid);
-        setIsAdmin(adminCheck);
-      } else {
-        setIsAdmin(false);
-        setLoggedIn(false);
-        setUser(null);
-      }
-    });
-  }, []);
-
-  const handleLogin = () => {
-    navigate("/login");
-  };
-
-  const handleLogout = () => {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        console.log("Signed out successfully");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText("wines4all@gmail.com");
@@ -66,6 +15,7 @@ const FooterWine = () => {
   const hideTooltip = () => {
     setShowTooltip(false);
   };
+
   return (
     <Navbar
       className="footer"
@@ -95,6 +45,8 @@ const FooterWine = () => {
             <Nav.Item>Copyright © Diana Gal</Nav.Item>
           </div>
         </Nav>
+
+        {/* Contact information */}
         <Nav className="m-auto flex-column flex-md-row align-items-center">
           <div className="d-flex flex-md-row flex-column">
             <Nav.Item>Contact us at:</Nav.Item>
@@ -107,6 +59,8 @@ const FooterWine = () => {
               onMouseOut={hideTooltip}>
               wines4all@gmail.com
             </Nav.Link>
+
+            {/* Email copy */}
             <Overlay
               target={emailRef.current}
               show={showTooltip}

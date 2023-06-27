@@ -5,13 +5,15 @@ import {
   Col,
   Container,
   Image,
-  ModalHeader,
+  Alert,
 } from "react-bootstrap";
 import { RiCloseLine } from "react-icons/ri";
 import ReactStars from "react-rating-stars-component";
+
 const WineExtended = (props) => {
-  //destructuram props
-  const { wine, show, onHide, totalRating } = props;
+  // Destructure props
+  const { wine, show, onHide, totalRating, ratingChanged, alert, setAlert } =
+    props;
   const {
     src,
     name,
@@ -25,7 +27,9 @@ const WineExtended = (props) => {
   } = wine;
 
   const splitDescription = () => {
+    // Split description into an array of lines
     const descriptionArray = description.split("\\n");
+    // Map each line to a paragraph element
     const paragraphs = descriptionArray.map((line, index) => (
       <p key={index}>{line}</p>
     ));
@@ -40,8 +44,7 @@ const WineExtended = (props) => {
       onHide={onHide}
       size="xl"
       aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
+      centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           <h3>{name}</h3>
@@ -77,6 +80,7 @@ const WineExtended = (props) => {
                     value={totalRating}
                     isHalf={true}
                     count={5}
+                    onChange={ratingChanged}
                     size={28}
                     activeColor="#872424"
                     color="#e3e3e3"
@@ -84,6 +88,15 @@ const WineExtended = (props) => {
                   {totalRating}({ratings.length}{" "}
                   {ratings.length > 1 ? "ratings" : "rating"})
                 </p>
+                {alert && (
+                  <Alert
+                    className="mt-2"
+                    variant={alert.type}
+                    onClose={() => setAlert(null)}
+                    dismissible>
+                    {alert.message}
+                  </Alert>
+                )}
               </div>
             </Col>
           </Row>
@@ -94,8 +107,7 @@ const WineExtended = (props) => {
       <Modal.Footer className="modal-footer">
         <Button
           className="blog-button d-flex align-items-center"
-          onClick={onHide}
-        >
+          onClick={onHide}>
           <RiCloseLine size="1.5em" className="mt-1" />
           Close
         </Button>

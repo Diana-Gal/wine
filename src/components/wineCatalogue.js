@@ -1,10 +1,6 @@
-import NavWine from "./NavWine";
-import WineFilters from "./filtersWine";
-import { Container, Row, Col } from "react-bootstrap";
-import Wine from "./wine";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { db } from "../config/firebase";
+import { Container, Row, Col, Alert } from "react-bootstrap";
 import {
   collection,
   getDocs,
@@ -13,16 +9,25 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+
+import NavWine from "./NavWine";
+import WineFilters from "./filtersWine";
+import Wine from "./wine";
 import FooterWine from "./FooterWine";
+
+import { db } from "../config/firebase";
 
 const WineCatalogue = () => {
   const [wines, setWines] = useState([]);
+  const [alert, setAlert] = useState(null); // New state for success/error
+
   const navigate = useNavigate();
 
   useEffect(() => {
     getWineList();
   }, []);
 
+  // Fetch the wine list based on filter parameters
   const getWineList = async (
     typeFilter = "",
     varietalFilter = "",
@@ -51,63 +56,45 @@ const WineCatalogue = () => {
     if (vintageFilter) {
       q = query(q, where("year", "==", vintageFilter));
     }
+
     const winesDocs = await getDocs(q);
-    let newWines = winesDocs.docs.map((doc) => {
-      let newWine = doc.data();
-      newWine.id = doc.id;
-      return newWine;
-    });
+    const newWines = winesDocs.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
     setWines(newWines);
   };
 
-  //Functie folosita pentru a sterge un vin din baza de date folosind id-ul vinului
+  // Function to delete a wine from the database based on its ID
   const handleDeleteWine = async (id) => {
     await deleteDoc(doc(db, "wines", id));
     getWineList();
   };
 
+  // Function to navigate to the edit page for a specific wine
   const handleEditWine = async (id) => {
-    navigate(`/editWine/${id}`); //  Impun ruta "/editWine", deci declansez afisarea formularului
+    navigate(`/editWine/${id}`);
   };
 
-  //Functie folosita pentru a naviga spre pagina de editare pentru un anumit vin
-  //folosind id-ul vinului pentru a aduce datele curente din baza de date
+  // Render each wine item
+  const renderWines = () => {
+    return wines.map((item) => {
+      const { id, ...wineProps } = item;
 
-  //se utilizează metoda "map" pentru a parcurge fiecare element din lista de vinuri "props.wineList
-  const list = wines.map((item) => {
-    const {
-      src,
-      name,
-      country,
-      region,
-      varietal,
-      description,
-      type,
-      year,
-      ratings,
-      id,
-    } = item; //  Am destructurat obiectul "item"
-
-    return (
-      <Col key={id}>
-        <Wine
-          src={src}
-          name={name}
-          country={country}
-          region={region}
-          varietal={varietal}
-          description={description}
-          type={type}
-          year={year}
-          ratings={ratings}
-          id={id}
-          handleDeleteWine={handleDeleteWine}
-          handleEditWine={handleEditWine}
-        />
-      </Col>
-    );
-  });
-
+      return (
+        <Col key={id}>
+          <Wine
+            id={id}
+            handleDeleteWine={handleDeleteWine}
+            handleEditWine={handleEditWine}
+            setAlert={setAlert}
+            alert={alert}
+            {...wineProps}
+          />
+        </Col>
+      );
+    });
+  };
   const filterRowStyle = {
     backgroundColor: "rgb(114, 47, 55)",
   };
@@ -121,13 +108,24 @@ const WineCatalogue = () => {
         </Row>
       </Container>
       <Container>
+        <Row>
+          {alert && (
+            <Alert
+              className="mt-2"
+              variant={alert.type}
+              onClose={() => setAlert(null)}
+              dismissible>
+              {alert.message}
+            </Alert>
+          )}
+        </Row>
         <Row
           xs={1}
           md={2}
           lg={3}
           xl={4}
           className="g-4 justify-content-md-center mb-6">
-          {list}
+          {renderWines()}
         </Row>
         <Row className="mt-4"></Row>
       </Container>

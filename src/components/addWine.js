@@ -5,8 +5,7 @@ import { db } from "../config/firebase";
 import { getDoc, doc, addDoc, collection, updateDoc } from "firebase/firestore";
 import NavWine from "./NavWine";
 import FooterWine from "./FooterWine";
-//useState: functie-admite parametri care sunt folositi pt a impune valoarea initiala a variabilelor
-//Componenta utilizează hook-ul "useState" pentru a gestiona starea componentei.
+
 const AddWine = () => {
   const { id } = useParams();
   const [wine, setWine] = useState({
@@ -24,6 +23,7 @@ const AddWine = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Fetches the wine data when component mounts
     const getWine = async (id) => {
       const ref = await getDoc(doc(db, "wines", id));
       setWine(ref.data());
@@ -32,26 +32,27 @@ const AddWine = () => {
     if (id) {
       getWine(id);
     }
-  }, []);
+  }, [id]); // Dependency array added to run effect when id changes
 
-  //Funcția "addWine" adaugă un vin nou în baza de date
+  // Adds a new wine to the database
   const addWine = async () => {
     wine.ratings = [];
     await addDoc(collection(db, "wines"), wine);
     navigate(`/`);
   };
 
+  // Updates the selected wine in the database
   const editWine = async () => {
-    //Functie care updateaza datele despre vinul ales pentru editare
     await updateDoc(doc(db, "wines", id), wine);
     navigate(`/`);
   };
 
-  //am creat un obiect wine care il transmit la app prin apel fct props.transfer
+  // Handles form submission
   const handleSubmit = (evt) => {
     const form = evt.currentTarget;
     evt.preventDefault();
     if (form.checkValidity() === false) {
+      // Validates form fields
       setAlert({
         type: "danger",
         message: "Please fill in all required fields!",
@@ -62,14 +63,17 @@ const AddWine = () => {
     setValidated(true);
 
     if (id) {
+      // Edits an existing wine
       editWine();
-      setAlert({ type: "success", message: "Wine edited successfully." }); // Set success message
+      setAlert({ type: "success", message: "Wine edited successfully." });
     } else {
+      // Adds a new wine
       addWine(); //  Transmit spre <App /> obiectul carte
-      setAlert({ type: "success", message: "Wine added successfully." }); // Set success message
+      setAlert({ type: "success", message: "Wine added successfully." });
     }
   };
 
+  // Handles input change and updates wine state
   const handleChange = (e) => {
     const { name, value } = e.target;
     setWine((prevWine) => ({
@@ -78,20 +82,30 @@ const AddWine = () => {
     }));
   };
 
+  // Generates year options for the select input
+  const generateYearOptions = () => {
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    for (let year = currentYear; year >= 1800; year--) {
+      years.push(
+        <option key={year} value={year}>
+          {year}
+        </option>
+      );
+    }
+    return years;
+  };
+
   return (
     <>
-      {alert && (
-        <Alert variant={alert.type} onClose={() => setAlert(null)} dismissible>
-          {alert.message}
-        </Alert>
-      )}
       <NavWine />
       <Container className="d-flex mt-4 justify-content-center mb-6">
         <div className="w-100" style={{ maxWidth: "700px" }}>
           <Card>
             <Card.Body>
               <h2 className="text-center mb-4">
-                {id ? "Edit Wine" : "Add Wine"}
+                {/* Renders the title based on whether it's an edit or add operation */}
+                {id ? "Edit Wine" : "Add Wine"}{" "}
               </h2>
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group>
@@ -115,6 +129,7 @@ const AddWine = () => {
                     required
                   />
                 </Form.Group>
+
                 <Form.Group>
                   <Form.Label>Region:</Form.Label>
                   <Form.Control
@@ -147,12 +162,14 @@ const AddWine = () => {
 
                 <Form.Group>
                   <Form.Label>Year:</Form.Label>
-                  <Form.Control
-                    type="number"
+                  <Form.Select
                     value={wine.year}
                     name="year"
                     onChange={handleChange}
-                  />
+                    aria-label="Year">
+                    <option value="">Select Year</option>
+                    {generateYearOptions()}
+                  </Form.Select>
                 </Form.Group>
 
                 <Form.Group>
@@ -179,6 +196,14 @@ const AddWine = () => {
                 <Form.Group>
                   <Form.Label>* Indicates a required field</Form.Label>
                 </Form.Group>
+                {alert && (
+                  <Alert
+                    variant={alert.type}
+                    onClose={() => setAlert(null)}
+                    dismissible>
+                    {alert.message}
+                  </Alert>
+                )}
                 <div className="d-flex justify-content-center">
                   <Button
                     className="w-50 mt-2 button align-self-center"

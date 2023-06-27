@@ -1,25 +1,26 @@
 import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, checkIsAdmin } from "../config/firebase";
-import { Card, Row, Col, Button, Image } from "react-bootstrap";
-import { BsTrashFill, BsPencilSquare } from "react-icons/bs";
+import { Card, Row, Col, Button } from "react-bootstrap";
+import { BsTrashFill } from "react-icons/bs";
 const Comment = (props) => {
-  const { userName, src, id, userId, date, message, deleteComment } = props;
+  const { userName, id, userId, date, message, deleteComment } = props;
 
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Listen for changes in the user authentication state
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         setIsLoggedIn(true);
         const adminCheck = await checkIsAdmin(user.uid);
         setIsAdmin(adminCheck);
-        console.log(user);
-
+        // Set the user data
         setUser(user);
       } else {
+        // If user is not authenticated
         setIsLoggedIn(false);
         setIsAdmin(false);
       }

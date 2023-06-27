@@ -1,13 +1,16 @@
 import { React, useState, useEffect } from "react";
-import { Card, Button, Modal, Col, Row, Container } from "react-bootstrap";
+import { Card, Button, Col, Row, Container } from "react-bootstrap";
 import { BsTrashFill, BsPencilSquare } from "react-icons/bs";
+import ReactStars from "react-rating-stars-component";
+import WineExtended from "./wineExtended";
+
+import { doc, updateDoc } from "firebase/firestore";
 import { auth, db, checkIsAdmin } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import ReactStars from "react-rating-stars-component";
-import { doc, updateDoc } from "firebase/firestore";
+
 import "../styles.css";
-import WineExtended from "./wineExtended";
-//comp primeste proprietati prin parametrul props care sunt apoi destructurate
+
+// Component receives properties through the `props` parameter, which are then destructured
 const Wine = (props) => {
   const {
     src,
@@ -22,7 +25,9 @@ const Wine = (props) => {
     id,
     handleEditWine,
     handleDeleteWine,
-  } = props; //destructurare props
+    setAlert,
+    alert,
+  } = props; //Destructuring props
 
   const [modalShow, setModalShow] = useState(false);
 
@@ -42,6 +47,7 @@ const Wine = (props) => {
   const [totalRating, setTotalRating] = useState(calculateTotalRating());
 
   useEffect(() => {
+    // Use the onAuthStateChanged function to listen for authentication state changes
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         setLoggedIn(true);
@@ -68,10 +74,13 @@ const Wine = (props) => {
     },
   };
 
-  // You can perform any logic here when the rating changes
+  // This function is called when the rating changes
   const ratingChanged = async (newRating) => {
     if (!loggedIn) {
-      alert("Please Login before rating a wine.");
+      setAlert({
+        type: "danger",
+        message: "Please Login before rating a wine!",
+      });
       return;
     }
 
@@ -104,11 +113,11 @@ const Wine = (props) => {
 
   return (
     <>
-      <Card className="h-100 card-wines" onClick={onClickCard}>
+      <Card className="h-100 card-wines">
         <Card.Body>
           <Container fluid>
             <Row>
-              <Col className="wine-image-col">
+              <Col className="wine-image-col" onClick={onClickCard}>
                 <Card.Img
                   className="wine-image"
                   variant="top"
@@ -116,7 +125,10 @@ const Wine = (props) => {
                 />
               </Col>
               <Col className="justify-content-center text-center d-flex flex-column align-items-center">
-                <Card.Text style={stil.ratingStyle}>{totalRating}</Card.Text>
+                <Row className="flex-grow-1 w-100" onClick={onClickCard}></Row>
+                <Card.Text onClick={onClickCard} style={stil.ratingStyle}>
+                  {totalRating}
+                </Card.Text>
                 <ReactStars
                   key={totalRating} // Add key prop with totalRating as the value
                   value={totalRating}
@@ -127,15 +139,16 @@ const Wine = (props) => {
                   activeColor="#872424"
                   color="#e3e3e3"
                 />
-                <Card.Text>
+                <Card.Text onClick={onClickCard}>
                   ({ratings.length} {ratings.length > 1 ? "ratings" : "rating"})
                 </Card.Text>
+                <Row className="flex-grow-1 w-100" onClick={onClickCard}></Row>
               </Col>
             </Row>
-            <Row>
+            <Row onClick={onClickCard}>
               <Card.Title style={stil.title}>{name}</Card.Title>
             </Row>
-            <Row>
+            <Row onClick={onClickCard}>
               <Card.Text className="mb-1">
                 <strong>Country: </strong>
                 {country}
@@ -179,9 +192,12 @@ const Wine = (props) => {
       </Card>
       <WineExtended
         totalRating={totalRating}
+        ratingChanged={ratingChanged}
         wine={props}
         show={modalShow}
         onHide={() => setModalShow(false)}
+        alert={alert}
+        setAlert={setAlert}
       />
     </>
   );

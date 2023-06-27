@@ -15,33 +15,30 @@ import { FaRegComments } from "react-icons/fa";
 import { updateDoc, doc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { v4 as uuid } from "uuid";
-import { auth, checkIsAdmin, db } from "../config/firebase";
+import { auth, db } from "../config/firebase";
+
 const BlogExtended = (props) => {
   const { blog, show, onHide, date } = props;
   const { src, title, description, id } = blog;
   const [comments, setComments] = useState(props.comments);
   const [newComment, setNewComment] = useState("");
   const [user, setUser] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [alert, setAlert] = useState(null);
+
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         setIsLoggedIn(true);
-        const adminCheck = await checkIsAdmin(user.uid);
-        setIsAdmin(adminCheck);
-
         setUser(user);
       } else {
         setIsLoggedIn(false);
-        setIsAdmin(false);
       }
     });
   }, []);
 
   const splitDescription = () => {
-    const descriptionArray = description.split("\\n");
+    const descriptionArray = description.split(/\n/g);
     const paragraphs = descriptionArray.map((line, index) => (
       <p key={index}>{line}</p>
     ));
@@ -58,7 +55,7 @@ const BlogExtended = (props) => {
     setNewComment(value);
   };
 
-  //Funcția "addComment" adaugă un comment nou in baza de date
+  // Function "addComment" adds a new comment to the database
   const addComment = async (newComment) => {
     if (!isLoggedIn) {
       setAlert({
@@ -78,7 +75,6 @@ const BlogExtended = (props) => {
     });
     const comment = {
       userName: user.displayName,
-      src: user.photoURL,
       date: currentDate,
       id: uuid(),
       userId: user.uid,
@@ -97,7 +93,7 @@ const BlogExtended = (props) => {
     setComments(updatedComments);
   };
 
-  //Funcția "deleteComment" adaugă un comment nou in baza de date
+  // Function "deleteComment" deletes a comment from the database
   const deleteComment = async (commentId) => {
     const updatedComments = comments.filter(
       (comment) => comment.id != commentId

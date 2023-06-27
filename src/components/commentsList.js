@@ -1,7 +1,9 @@
 import Comment from "./comment";
 import { Container, Row } from "react-bootstrap";
+
 const CommentsList = (props) => {
   const comments = props.comments;
+
   // Sorting the comments array by date in descending order
   const sortedComments = comments.sort((a, b) => {
     const dateA = new Date(
@@ -12,14 +14,14 @@ const CommentsList = (props) => {
     );
     return dateB - dateA;
   });
+
   const commentsList = sortedComments.map((item) => {
-    const { date, userName, src, id, userId, message } = item;
+    const { date, userName, id, userId, message } = item;
 
     return (
       <Row key={id}>
         <Comment
           id={id}
-          src={src}
           date={date}
           userName={userName}
           userId={userId}
@@ -32,4 +34,5 @@ const CommentsList = (props) => {
 
   return <Container id="comments-list">{commentsList}</Container>;
 };
+
 export default CommentsList;

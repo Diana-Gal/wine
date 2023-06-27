@@ -1,41 +1,44 @@
 import React, { useState } from "react";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../config/firebase";
+
 import { NavLink, useNavigate } from "react-router-dom";
 import { Form, Button, Card, Container, Alert } from "react-bootstrap";
 import FooterWine from "./FooterWine";
+import NavWine from "./NavWine";
+import "../styles.css";
 
 const Login = () => {
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [alert, setAlert] = useState(null); // New state for success/error
-  const buttonStyle = {
-    color: "white",
-    backgroundColor: "#722f37",
-    borderColor: "#722f37",
-  };
-  const signInWithGoogle = async () => {
+  const [alert, setAlert] = useState(null); // State for success/error message
+
+  // Function for signing in with Google
+  const signInWithGoogle = async (evt) => {
+    evt.preventDefault();
     try {
       await signInWithPopup(auth, googleProvider).then((userCredential) => {
-        // Signed in
-        navigate("/");
+        // Signed in successfully
+        navigate("/"); // Redirect to the home page
       });
     } catch (err) {
       console.error(err);
     }
   };
 
-  const onLogin = (e) => {
-    e.preventDefault();
+  // Function for handling the login form submission
+  const onLogin = (evt) => {
+    evt.preventDefault();
+
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        navigate("/");
-      })
+      .then((userCredential) => navigate("/")) // Redirect to the home page on successful login
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
 
+        // Set the error message state if login fails
         setAlert({
           type: "danger",
           message: (
@@ -55,6 +58,7 @@ const Login = () => {
 
   return (
     <>
+      <NavWine />
       <Container
         className="d-flex align-items-center justify-content-center"
         style={{ minHeight: "100vh" }}>
@@ -70,7 +74,7 @@ const Login = () => {
                     name="email"
                     required
                     placeholder="Email address"
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)} // Update email state on change
                   />
                 </Form.Group>
                 <Form.Group id="password">
@@ -80,7 +84,7 @@ const Login = () => {
                     name="password"
                     required
                     placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)} // Update password state on change
                   />
                 </Form.Group>
                 {alert && (
@@ -93,17 +97,16 @@ const Login = () => {
                   </Alert>
                 )}
                 <Button
-                  className="w-100 mt-2"
-                  style={buttonStyle}
+                  className="w-100 mt-2 button-style"
                   type="submit"
                   onClick={onLogin}>
+                  {/*Call the onLogin function on button click*/}
                   Sign In
                 </Button>
                 <Button
-                  className="w-100 mt-2"
-                  style={buttonStyle}
+                  className="w-100 mt-2 button-style"
                   type="submit"
-                  onClick={signInWithGoogle}>
+                  onClick={(e) => signInWithGoogle(e)}>
                   Sign In With Google
                 </Button>
               </Form>
@@ -117,6 +120,7 @@ const Login = () => {
           </div>
         </div>
       </Container>
+      <FooterWine />
     </>
   );
 };

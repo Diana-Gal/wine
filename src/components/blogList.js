@@ -17,15 +17,17 @@ import {
 
 const BlogList = () => {
   const [blogs, setBlog] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     getBlogList();
   }, []);
 
+  // Fetches the list of blogs from the database
   const getBlogList = async () => {
     const blogCollection = collection(db, "blog");
-    const q = query(blogCollection, orderBy("date", "desc")); // Query to order by "date" field in ascending order
+    const q = query(blogCollection, orderBy("date", "desc")); // Query to order by "date" field in descending order
     const blogDocs = await getDocs(q);
     let newBlogs = blogDocs.docs.map((doc) => {
       let newBlog = doc.data();
@@ -35,18 +37,18 @@ const BlogList = () => {
     setBlog(newBlogs);
   };
 
+  // Handles the delete
   const handleDeleteBlog = async (id) => {
-    // Implement your delete logic here
     await deleteDoc(doc(db, "blog", id));
     getBlogList();
   };
 
+  // Handles the edit
   const handleEditBlog = async (id) => {
-    // Implement your edit logic here
-    console.log("Edit blog with ID:", id);
     navigate(`/editBlog/${id}`);
   };
 
+  // Generates the list of blog components based on the fetched data
   const blogList = blogs.map((item) => {
     const { src, date, title, description, id, comments } = item;
 
