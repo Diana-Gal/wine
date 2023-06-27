@@ -12,16 +12,16 @@ import BlogList from "./components/blogList";
 const App = () => {
   return (
     <Routes>
-      <Route path="wine/" element={<WineCatalogue />} />
-      <Route path="wine/login" element={<Login />} />
-      <Route path="wine/signup" element={<Signup />} />
-      <Route path="wine/addWine" element={<AddWine />} />
-      <Route path="wine/editWine/:id" element={<AddWine />} />
+      <Route path="/" element={<WineCatalogue />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/addWine" element={<AddWine />} />
+      <Route path="/editWine/:id" element={<AddWine />} />
       <Route path="*" element={<MissingRoute />} />
-      <Route path="wine/about" element={<About />} />
-      <Route path="wine/blog" element={<BlogList />} />
-      <Route path="wine/addBlog" element={<AddBlog />} />
-      <Route path="wine/editBlog/:id" element={<AddBlog />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/blog" element={<BlogList />} />
+      <Route path="/addBlog" element={<AddBlog />} />
+      <Route path="/editBlog/:id" element={<AddBlog />} />
     </Routes>
   );
 };
