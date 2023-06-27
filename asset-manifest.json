@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/wine/static/css/main.7aec3eef.css",
-    "main.js": "/wine/static/js/main.5015f187.js",
+    "main.js": "/wine/static/js/main.df81ee7f.js",
     "index.html": "/wine/index.html",
     "main.7aec3eef.css.map": "/wine/static/css/main.7aec3eef.css.map",
-    "main.5015f187.js.map": "/wine/static/js/main.5015f187.js.map"
+    "main.df81ee7f.js.map": "/wine/static/js/main.df81ee7f.js.map"
   },
   "entrypoints": [
     "static/css/main.7aec3eef.css",
-    "static/js/main.5015f187.js"
+    "static/js/main.df81ee7f.js"
   ]
 }
