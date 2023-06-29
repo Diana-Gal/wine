@@ -37,7 +37,6 @@ const Login = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-
         // Set the error message state if login fails
         setAlert({
           type: "danger",

@@ -136,11 +136,11 @@ const WineFilters = (props) => {
 
   return (
     <ButtonGroup className="d-flex justify-content-center mb-2">
-      {selectedType !== "" ||
-      selectedVarietal !== "" ||
-      selectedRegion !== "" ||
-      selectedCountry !== "" ||
-      selectedYear !== "" ? (
+      {selectedType != "" ||
+      selectedVarietal != "" ||
+      selectedRegion != "" ||
+      selectedCountry != "" ||
+      selectedYear != "" ? (
         <Button className="button-filter" onClick={resetFilters}>
           <RxReset size="1.75em" />
           Reset Filters
@@ -148,42 +148,38 @@ const WineFilters = (props) => {
       ) : (
         ""
       )}
-      <Dropdown onSelect={handleSelectType}>
+      <Dropdown onSelect={handleSelectType} className="d-flex">
         <Dropdown.Toggle className="dropdown-button">
           <GiWineGlass size="2em" />
-          {selectedType !== "" ? selectedType : "Type"}
+          {selectedType != "" ? selectedType : "Type"}
         </Dropdown.Toggle>
         <Dropdown.Menu>{typeDropdownItems}</Dropdown.Menu>
       </Dropdown>
-
-      <Dropdown onSelect={handleSelectVarietal}>
+      <Dropdown onSelect={handleSelectVarietal} className="d-none d-sm-block">
         <Dropdown.Toggle className="dropdown-button">
           <GiGrapes size="2em" />
-          {selectedVarietal !== "" ? selectedVarietal : "Varietal"}
+          {selectedVarietal != "" ? selectedVarietal : "Varietal"}
         </Dropdown.Toggle>
         <Dropdown.Menu>{varietalDropdownItems}</Dropdown.Menu>
       </Dropdown>
-
-      <Dropdown onSelect={handleSelectCountry}>
+      <Dropdown onSelect={handleSelectCountry} className="d-none d-md-block">
         <Dropdown.Toggle className="dropdown-button">
           <ImMap2 size="2em" />{" "}
-          {selectedCountry !== "" ? selectedCountry : "Country"}
+          {selectedCountry != "" ? selectedCountry : "Country"}
         </Dropdown.Toggle>
         <Dropdown.Menu>{countryDropdownItems}</Dropdown.Menu>
       </Dropdown>
-
-      <Dropdown onSelect={handleSelectRegion}>
+      <Dropdown onSelect={handleSelectRegion} className="d-none d-md-block">
         <Dropdown.Toggle className="dropdown-button">
           <GoLocation size="2em" />
-          {selectedRegion !== "" ? selectedRegion : "Region"}
+          {selectedRegion != "" ? selectedRegion : "Region"}
         </Dropdown.Toggle>
         <Dropdown.Menu>{regionDropdownItems}</Dropdown.Menu>
       </Dropdown>
-
-      <Dropdown onSelect={handleSelectYear}>
+      <Dropdown onSelect={handleSelectYear} className="d-none d-lg-block">
         <Dropdown.Toggle className="dropdown-button">
           <LuCalendar size="2em" />
-          {selectedYear !== "" ? selectedYear : "Vintage"}
+          {selectedYear != "" ? selectedYear : "Vintage"}
         </Dropdown.Toggle>
         <Dropdown.Menu>{vintageDropdownItems}</Dropdown.Menu>
       </Dropdown>
